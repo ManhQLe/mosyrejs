@@ -14,3 +14,4 @@ class One{
 var y = new One();
 y.get2();
 
+//Failed to get get2;
