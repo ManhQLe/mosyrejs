@@ -2,20 +2,23 @@
 //connect()
 //onCommunication()
 //
-var X = {};
+'use strict'
+
+const Creation = {
+    connect(clay1,clay2,atMedium){
+        clay1.onConnection(clay2,atMedium);
+        clay2.onConnection(clay1,atMedium);
+    },
+    vibrate(clay,atMedium,signal,soureClay){
+        clay.onCommunication(soureClay,atMedium,signal);
+    }
+}
 
 class Clay {
     constructor(props) {
-    }
-
-    connect(withClay, atMedium) {
-        this.onConnection(withClay,atMedium);
+        this.__={props : props||{}}
     }    
-
-    interact(withClay,atMedium,sigal){
-        withClay.onCommunication(this,atMedium,signal);
-    }
-
+   
     onCommunication(fromClay, atMedium, signal) {}
 
     onConnection(withClay,atMedium){}
@@ -24,38 +27,35 @@ class Clay {
         Clay.createProp(this, name, defVal, get, set, this.__.props)
     }
 
-    static createProp(O, name, def, getFx, setFx, storage) {
+    static createProp(O, name, defVal, getFx, setFx, storage) {
         getFx ? 1 : getFx = Clay.CONST.defaultGet;
         setFx ? 1 : setFx = Clay.CONST.defaultSet;
 
         Object.defineProperty(O, name, {
             get: function () {
-                getFx.call(this, name, storage, defVal);
+                return getFx.call(this, name, storage, defVal);
             },
             set: function (val) {
                 setFx.call(this, name, storage, val)
             }
         })
-    }
-
-    static CONST = {
-        defaultGet(name, store, defVal) {
-            store.hasOwnproperty(name)||defVal===undefined ? 1 : this[name] = defVal;
-            return store[name];
-        },
-        defaultSet(name, store, val) {
-            store[name] = val;
-        }
-    }
+    }    
 }
 
-export default Clay;
+Clay.CONST = {
+    defaultGet(name, store, defVal) {
+        store.hasOwnProperty(name)||defVal===undefined ? 1 : this[name] = defVal;
+        return store[name];
+    },
+    defaultSet(name, store, val) {
+        store[name] = val;
+    }
+}
 
 
 class SynEntity extends Clay {
     constructor(props) {
         super(props);   
-        this.__.props = props||{};     
         this.__.contacts = new Map();
         this.__.signalStore = {};
         this.__.sensor = SynEntity.sensor(this);        
@@ -116,16 +116,16 @@ class SynEntity extends Clay {
                         me.__.signalStore = {};
                         collected.clear();
                     }
+                    me.fx(me.ports,sigs);
                 }                
             }
             else{
                 const clay = contacts.get(portName)
-                clay?clay.interact(me,portName,signal):0;
+                clay?Creation.vibrate(clay,portName,signal,me):0;                
             }                                    
             
         }
     }
 }
 
-
-export default SynEntity;
+module.exports = {Clay,SynEntity,Creation};
