@@ -7,13 +7,18 @@ var X = {};
 class Clay {
     constructor(props) {
     }
-    connect(clay, atMedium) {}
 
-    onCommunication(fromClay, atMedium, signal) {}
+    connect(withClay, atMedium) {
+        this.onConnection(withClay,atMedium);
+    }    
 
     interact(withClay,atMedium,sigal){
         withClay.onCommunication(this,atMedium,signal);
     }
+
+    onCommunication(fromClay, atMedium, signal) {}
+
+    onConnection(withClay,atMedium){}
 
     createProp(name, defVal, get, set) {
         Clay.createProp(this, name, defVal, get, set, this.__.props)
@@ -47,19 +52,19 @@ class Clay {
 export default Clay;
 
 
-class Entity extends Clay {
+class SynEntity extends Clay {
     constructor(props) {
         super(props);   
         this.__.props = props||{};     
         this.__.contacts = new Map();
         this.__.signalStore = {};
-        this.__.sensor = Entity.sensor(this);
+        this.__.sensor = SynEntity.sensor(this);        
        
 
         this.createProp("staged", true);
+        this.createProp("inPortNames",[]);
         this.createProp("responsefx", function () {})
         this.createProp("initfx",function(){})
-        this.createProp("contactPoints", []);
         this.createProp("props", undefined, function () {
             return this.__.props;
         }, function () {})
@@ -69,35 +74,58 @@ class Entity extends Clay {
         }, function () {})
 
         this.__.ports = new Proxy(this,{
-            get(target,atMedium){
-                return target.__.signalStore[atMedium];
+            get(target,portName){
+                return target.__.signalStore[portName];
             },
-            set(target,atMedium,signal){
-                target.__.sensor({atMedium,signal});
+            set(target,portName,signal){
+                target.__.sensor.next({portName,signal});
             }
         });
-       
+        this.__.sensor.next();
     }
 
-    connect(clay, atMedium) {
-        const inPorts = this.inPorts;
+    onConnection(withClay, atMedium) {
+        const inPortNames = this.inPortNames;
         const {contacts} = this.__;               
-        contacts.set(atMedium,clay);
+        contacts.set(atMedium,withClay);
     }
 
-    onCommunication(fromClay, atMedium, signal){        
+    onCommunication(fromClay, atMedium, signal){
+        const {contacts} = me.__;
+        contacts.get(atMedium) === fromClay?
+        this.__.ports[atMedium] = signal:1;
+        
     }
 
-    static *sensor(Entity){
-        let i = 0;
-        const max= Entity.contactPoints.length;
-        Entity.initfx()
-        while(true){
-            const {atMedium,signal} = yield;
+    //This function is really just for checking input collection and staging;
+    static *sensor(me){
+        let i = 0;                
+        const collected = new Set();
+        while(true){            
+            const {portName,signal} = yield;            
+            const {contacts,signalStore} = me.__;
+                                    
+            if(inPortNames.indexOf(portName)>=0)
+            {
+                signalStore[portName] = signal;
+                collected.add(portName);
+                const {inPortNames} = me;
+                if(collected.size == inPortNames.length){
+                    const sigs = me.__.signalStore;
+                    if(me.stage){
+                        me.__.signalStore = {};
+                        collected.clear();
+                    }
+                }                
+            }
+            else{
+                const clay = contacts.get(portName)
+                clay?clay.interact(me,portName,signal):0;
+            }                                    
             
         }
     }
 }
 
 
-export default Entity;
+export default SynEntity;
