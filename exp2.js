@@ -11,3 +11,5 @@ Object.defineProperty(C,"key",{
 console.log(C.key);
 
 
+var m = new Map();
+m.set("","");

@@ -1,26 +1,27 @@
-//inPorts:[]
-//saveContact()
-//onVibration()
+//contactPoints:[]
+//connect()
+//onCommunication()
 //
 var X = {};
 
-class Unit {
+class Clay {
     constructor(props) {
-        this.__ = {
-            props: props || {}
-        }
     }
-    saveContact(unit, atMedium) {}
+    connect(clay, atMedium) {}
 
-    onVibration(fromUnit, atMedium, signal) {}
+    onCommunication(fromClay, atMedium, signal) {}
+
+    interact(withClay,atMedium,sigal){
+        withClay.onCommunication(this,atMedium,signal);
+    }
 
     createProp(name, defVal, get, set) {
-        Unit.createProp(this, name, defVal, get, set, this.__.props)
+        Clay.createProp(this, name, defVal, get, set, this.__.props)
     }
 
     static createProp(O, name, def, getFx, setFx, storage) {
-        getFx ? 1 : getFx = Unit.CONST.defaultGet;
-        setFx ? 1 : setFx = Unit.CONST.defaultSet;
+        getFx ? 1 : getFx = Clay.CONST.defaultGet;
+        setFx ? 1 : setFx = Clay.CONST.defaultSet;
 
         Object.defineProperty(O, name, {
             get: function () {
@@ -34,7 +35,7 @@ class Unit {
 
     static CONST = {
         defaultGet(name, store, defVal) {
-            store.hasOwnproperty(name) ? 1 : this[name] = defVal;
+            store.hasOwnproperty(name)||defVal===undefined ? 1 : this[name] = defVal;
             return store[name];
         },
         defaultSet(name, store, val) {
@@ -43,39 +44,60 @@ class Unit {
     }
 }
 
-export default Unit;
+export default Clay;
 
 
-class Pack extends Unit {
+class Entity extends Clay {
     constructor(props) {
-        super(props);
-        this.__.ports = {};
+        super(props);   
+        this.__.props = props||{};     
         this.__.contacts = new Map();
+        this.__.signalStore = {};
+        this.__.sensor = Entity.sensor(this);
+       
 
         this.createProp("staged", true);
-        this.createProp("fx", function () {})
-        this.createProp("inPorts", []);
-        this.createProp("props", null, function () {
+        this.createProp("responsefx", function () {})
+        this.createProp("initfx",function(){})
+        this.createProp("contactPoints", []);
+        this.createProp("props", undefined, function () {
             return this.__.props;
         }, function () {})
 
-        this.createProp("ports", null, function () {
-            return this.__.ports
-        }, function () {});
+        this.createProp("ports", undefined, function () {
+            return this.__.ports;
+        }, function () {})
 
-
+        this.__.ports = new Proxy(this,{
+            get(target,atMedium){
+                return target.__.signalStore[atMedium];
+            },
+            set(target,atMedium,signal){
+                target.__.sensor({atMedium,signal});
+            }
+        });
+       
     }
 
-    saveContact(unit, atMedium) {
+    connect(clay, atMedium) {
         const inPorts = this.inPorts;
-        const {contacts} = this.__;
-                
+        const {contacts} = this.__;               
+        contacts.set(atMedium,clay);
     }
 
-    onVibration(fromUnit, atMedium, signal){
-        
+    onCommunication(fromClay, atMedium, signal){        
+    }
+
+    static *sensor(Entity){
+        let i = 0;
+        const max= Entity.contactPoints.length;
+        Entity.initfx()
+        while(true){
+            const {atMedium,signal} = yield;
+            
+        }
     }
 }
 
 
-export default Pack;
+export default Entity;
