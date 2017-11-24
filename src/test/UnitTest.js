@@ -1,5 +1,5 @@
 const mar3 = require("../nodejs");
-const {Clay,SynEntity} = mar3;
+const {Clay,SynEntity,Creation} = mar3;
 
 class Clay2 extends Clay{
     constructor(props){
@@ -13,6 +13,8 @@ class Clay2 extends Clay{
     }
 }
 
+console.log("---------------------TESTING CLAY---------------------")
+
 const c = new Clay2({
     "X":1,    
 })
@@ -21,4 +23,28 @@ console.log(v);
 console.log(c.X);
 console.log(c.Y);
 
-c.interact(c,"P",2);
+Creation.vibrate(c,"Test Test Test",1,{});
+
+const c1 = new Clay({
+    "Y":2
+})
+
+console.log("---------------------TESTING SYNENTITY---------------------")
+
+const c2 = new SynEntity({
+    "fx":function(ports,sigs){
+        console.log(ports.A);
+        console.log(ports.B);
+        console.log(sigs)
+    },
+    "inPortNames":["A","B"],
+})
+Creation.connect(c,c2,"A");
+Creation.connect(c1,c2,"B");
+
+Creation.vibrate(c2,"A",1,c);
+Creation.vibrate(c2,"B",3,c1);
+//Creation.vibrate(c2,"B",4,c1);
+
+
+console.log("---------------------TESTING CONDUIT---------------------")

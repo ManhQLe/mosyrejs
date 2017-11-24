@@ -16,7 +16,7 @@ const Creation = {
 
 class Clay {
     constructor(props) {
-        this.__={props : props||{}}
+        this.__= {props : props||{}}
     }    
    
     onCommunication(fromClay, atMedium, signal) {}
@@ -59,18 +59,13 @@ class SynEntity extends Clay {
         this.__.contacts = new Map();
         this.__.signalStore = {};
         this.__.sensor = SynEntity.sensor(this);        
-       
 
         this.createProp("staged", true);
         this.createProp("inPortNames",[]);
-        this.createProp("responsefx", function () {})
+        this.createProp("fx", function () {})
         this.createProp("initfx",function(){})
         this.createProp("props", undefined, function () {
             return this.__.props;
-        }, function () {})
-
-        this.createProp("ports", undefined, function () {
-            return this.__.ports;
         }, function () {})
 
         this.__.ports = new Proxy(this,{
@@ -79,53 +74,79 @@ class SynEntity extends Clay {
             },
             set(target,portName,signal){
                 target.__.sensor.next({portName,signal});
+                return true;
             }
         });
         this.__.sensor.next();
     }
 
-    onConnection(withClay, atMedium) {
-        const inPortNames = this.inPortNames;
+    onConnection(withClay, atMedium) {        
         const {contacts} = this.__;               
         contacts.set(atMedium,withClay);
     }
 
     onCommunication(fromClay, atMedium, signal){
-        const {contacts} = me.__;
-        contacts.get(atMedium) === fromClay?
-        this.__.ports[atMedium] = signal:1;
-        
+        const {contacts} = this.__;
+        const {inPortNames} = this;
+        inPortNames.indexOf(atMedium)>=0&&contacts.get(atMedium) === fromClay?
+        this.__.ports[atMedium] = signal:1;                
     }
 
-    //This function is really just for checking input collection and staging;
-    static *sensor(me){
-        let i = 0;                
+    //This function is for checking input collection and staging;
+    static *sensor(me){                   
         const collected = new Set();
         while(true){            
             const {portName,signal} = yield;            
             const {contacts,signalStore} = me.__;
-                                    
+            const {inPortNames} = me;                        
             if(inPortNames.indexOf(portName)>=0)
             {
-                signalStore[portName] = signal;
+                signalStore[portName] = signal;                
                 collected.add(portName);
                 const {inPortNames} = me;
                 if(collected.size == inPortNames.length){
                     const sigs = me.__.signalStore;
-                    if(me.stage){
-                        me.__.signalStore = {};
-                        collected.clear();
-                    }
-                    me.fx(me.ports,sigs);
+                    me.stage?collected.clear():0;
+                    me.fx(me.__.ports,sigs);
                 }                
             }
             else{
                 const clay = contacts.get(portName)
-                clay?Creation.vibrate(clay,portName,signal,me):0;                
+                clay?Creation.vibrate(clay,portName,signal,me):1;                
             }                                    
             
         }
     }
 }
+
+class Conduit extends Clay{
+    constructor(props){
+        super(props)
+        this.__.contacts = [];
+
+        this.createProp("signal",null,function(){},function(name,store,signal){
+            onCommunication(this,undefined,signal);
+        })
+    }
+
+    onConnection(withClay,atMedium){
+        const {contacts} = this.__;
+        const x = contacts.find(c=>{return c.withClay === withClay});
+        x&&(x.withMedium===atMedium|| (x.withClay instanceof Conduit))
+        ?1
+        :contacts.push({withClay,withMedium});
+    }
+
+    onCommunication(fromClay,atMedium,signal){
+        const {contacts} = this.__;
+        for(const c of contacts){
+            const {withClay,withMedium} = c;            
+            withClay!==fromClay && withMedium!==atMedium
+            ?setTimeout(Creation.connect,0,withClay,withMedium,signal,this)
+            :0
+        }
+    }
+}
+
 
 module.exports = {Clay,SynEntity,Creation};
