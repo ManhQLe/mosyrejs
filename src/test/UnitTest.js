@@ -1,5 +1,5 @@
 const mar3 = require("../mar3");
-const {Clay,SynEntity,Creation} = mar3;
+const {Clay,LogicBlock,Creation} = mar3;
 
 class Clay2 extends Clay{
     constructor(props){
@@ -29,9 +29,9 @@ const c1 = new Clay({
     "Y":2
 })
 
-console.log("---------------------TESTING SYNENTITY---------------------")
+console.log("---------------------TESTING LogicBlock---------------------")
 
-const c2 = new SynEntity({
+const c2 = new LogicBlock({
     "fx":function(ports,sigs){
         console.log(ports.A);
         console.log(ports.B);

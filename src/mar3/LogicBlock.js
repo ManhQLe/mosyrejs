@@ -1,12 +1,12 @@
 'use strict'
 const Clay = require('./Clay')
 
-class SynEntity extends Clay {
+class LogicBlock extends Clay {
     constructor(props) {
         super(props);   
         this.__.contacts = new Map();
         this.__.signalStore = {};
-        this.__.sensor = SynEntity.sensor(this);        
+        this.__.sensor = LogicBlock.sensor(this);        
 
         this.createProp("staged", true);
         this.createProp("inPortNames",[]);
@@ -67,4 +67,4 @@ class SynEntity extends Clay {
     }
 }
 
-module.exports = SynEntity;
+module.exports = LogicBlock;
