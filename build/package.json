@@ -2,7 +2,7 @@
   "name": "mar3",
   "version": "1.0.0",
   "description": "Wonderful Circuitry",
-  "main": "nodejs/index.js",
+  "main": "mar3/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
