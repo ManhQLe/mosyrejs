@@ -1,5 +1,5 @@
 'use strict'
-
+const Clay = require('./Clay')
 
 class Conduit extends Clay{
     constructor(props){

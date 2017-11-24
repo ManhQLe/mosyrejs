@@ -1,4 +1,4 @@
-const mar3 = require("../nodejs");
+const mar3 = require("../mar3");
 const {Clay,SynEntity,Creation} = mar3;
 
 class Clay2 extends Clay{

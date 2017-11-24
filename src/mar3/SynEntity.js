@@ -1,4 +1,5 @@
 'use strict'
+const Clay = require('./Clay')
 
 class SynEntity extends Clay {
     constructor(props) {
@@ -65,3 +66,5 @@ class SynEntity extends Clay {
         }
     }
 }
+
+module.exports = SynEntity;
