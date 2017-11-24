@@ -1,7 +1,8 @@
 'use strict'
-const Clay = require('./Clay')
+const Clay = require('./Clay');
+const PropClay = require('./PropClay');
 
-class LogicBlock extends Clay {
+class LogicBlock extends PropClay {
     constructor(props) {
         super(props);   
         this.__.contacts = new Map();
@@ -39,7 +40,7 @@ class LogicBlock extends Clay {
         const {contacts} = this.__;
         const {inPortNames} = this;
         if(inPortNames.indexOf(atMedium)>=0&&contacts.get(atMedium) === fromClay){
-            //this.__.ports[atMedium] = signal <-- Calling this will result in recursive Generator call (Generator is already running)
+            //this.__.ports[atMedium] = signal <-- Calling this will result in recursive Generator calls (Generator is already running)
             this.__.sensor.next({portName:atMedium,signal})
             this.__.fxReady?(this.__.fxReady = false,this.fx(this.__.ports)):1;
         }                

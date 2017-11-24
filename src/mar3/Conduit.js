@@ -1,7 +1,8 @@
 'use strict'
 const Clay = require('./Clay')
+const PropClay = require('./PropClay')
 
-class Conduit extends Clay {
+class Conduit extends PropClay {
     constructor(props) {
         super(props)
         this.__.contacts = [];
