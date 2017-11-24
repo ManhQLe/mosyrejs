@@ -7,8 +7,9 @@ class LogicBlock extends Clay {
         this.__.contacts = new Map();
         this.__.signalStore = {};
         this.__.sensor = LogicBlock.sensor(this);        
+        this.__.fxReady = false;
 
-        this.createProp("staged", true);
+        this.createProp("staged", false);
         this.createProp("inPortNames",[]);
         this.createProp("fx", function () {})
         this.createProp("initfx",function(){})
@@ -34,35 +35,37 @@ class LogicBlock extends Clay {
     }
 
     onCommunication(fromClay, atMedium, signal){
+       
         const {contacts} = this.__;
         const {inPortNames} = this;
-        inPortNames.indexOf(atMedium)>=0&&contacts.get(atMedium) === fromClay?
-        this.__.ports[atMedium] = signal:1;                
+        if(inPortNames.indexOf(atMedium)>=0&&contacts.get(atMedium) === fromClay){
+            //this.__.ports[atMedium] = signal <-- Calling this will result in recursive Generator call (Generator is already running)
+            this.__.sensor.next({portName:atMedium,signal})
+            this.__.fxReady?(this.__.fxReady = false,this.fx(this.__.ports)):1;
+        }                
     }
 
-    //This function is for checking input collection and staging;
+    //This function is for checking inputs collection and staging;
     static *sensor(me){                   
         const collected = new Set();
         while(true){            
             const {portName,signal} = yield;            
             const {contacts,signalStore} = me.__;
-            const {inPortNames} = me;                        
+            const {inPortNames} = me;  
+
             if(inPortNames.indexOf(portName)>=0)
             {
                 signalStore[portName] = signal;                
                 collected.add(portName);
                 const {inPortNames} = me;
-                if(collected.size == inPortNames.length){
-                    const sigs = me.__.signalStore;
-                    me.stage?collected.clear():0;
-                    me.fx(me.__.ports,sigs);
+                if(me.__.fxReady = collected.size == inPortNames.length){                    
+                    me.staged?collected.clear():0;
                 }                
             }
             else{
                 const clay = contacts.get(portName)
-                clay?Creation.vibrate(clay,portName,signal,me):1;                
-            }                                    
-            
+                clay?Clay.vibrate(clay,portName,signal,me):1;                
+            }
         }
     }
 }
