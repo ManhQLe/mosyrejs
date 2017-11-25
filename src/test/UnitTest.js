@@ -1,7 +1,7 @@
 const mar3 = require("../mar3");
-const {LogicBlock,Clay,Conduit} = mar3;
+const {Clay,ProgrammableClay,PropClay,Conduit} = mar3;
 
-class Clay2 extends Clay{
+class Clay2 extends PropClay{
     constructor(props){
         super(props);        
         this.createProp("X",0);
@@ -18,26 +18,28 @@ console.log("---------------------TESTING CLAY---------------------")
 const c = new Clay2({
     "X":1,    
 })
-var v = c.X;
-console.log(v);
+
 console.log(c.X);
 console.log(c.Y);
 
 Clay.vibrate(c,"Test Test Test",1,{});
 
-const c1 = new Clay({
+const c1 = new Clay2({
     "Y":2
 })
 
-console.log("---------------------TESTING LogicBlock---------------------")
+console.log("---------------------TESTING ProgrammableClay---------------------")
 
-const c2 = new LogicBlock({
-    "fx":function(ports,sigs){
+const c2 = new ProgrammableClay({
+    "fx":function(ports){
         console.log(ports.A);
         console.log(ports.B);
-        console.log(sigs)
+        ports.A = 5;        
+        ports.A = 5;     
+        //ports.B = 1.5;
     },
-    "inPortNames":["A","B"],
+    staged:true,
+    "inputNames":["A","B"],
 })
 Clay.connect(c,c2,"A");
 Clay.connect(c1,c2,"B");

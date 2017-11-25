@@ -8,7 +8,7 @@ class Conduit extends PropClay {
         this.__.contacts = [];
 
         this.createProp("signal", null, function () {}, function (name, store, signal) {
-            this.onCommunication(this, undefined, signal);
+            this.onCommunication(this, Symbol("ITalkToMe"), signal);
         })
     }
 
@@ -37,9 +37,9 @@ class Conduit extends PropClay {
                 withMedium
             } = c;
            
-            withClay !== fromClay && withMedium !== atMedium ?
-            (console.log(atMedium, withMedium,signal),setTimeout(Clay.vibrate, 0, withClay, withMedium, signal, this)) :
-                1
+            withClay !== fromClay && withMedium !== atMedium 
+            ? (console.log(`Propagating signal ${signal} from ${atMedium.toString()} to ${withMedium}`), setTimeout(Clay.vibrate, 0, withClay, withMedium, signal, this)) 
+            : 1
         }
     }
 }

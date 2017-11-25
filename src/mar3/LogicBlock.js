@@ -7,7 +7,7 @@ class LogicBlock extends ProgrammableClay {
         super(props);
         Object.assign(this.props, {
             "inputNames": this.definePorts(),
-            "fx": (ports) => this.logic.apply(ports, this.props)
+            "fx": (ports) => this.logic.call(ports, this.props)
         })
     }
 
