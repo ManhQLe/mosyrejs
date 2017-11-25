@@ -36,9 +36,9 @@ class Conduit extends PropClay {
                 withClay,
                 withMedium
             } = c;
-            
+           
             withClay !== fromClay && withMedium !== atMedium ?
-                setTimeout(Clay.vibrate, 0, withClay, withMedium, signal, this) :
+            (console.log(atMedium, withMedium,signal),setTimeout(Clay.vibrate, 0, withClay, withMedium, signal, this)) :
                 1
         }
     }

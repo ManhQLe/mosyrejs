@@ -1,20 +1,20 @@
 const mar3 = require("../mar3");
-const {Clay,LogicBlock,Conduit} = mar3;
+const {Clay,ProgrammableClay,Conduit} = mar3;
 
 
 console.log("---------------------TESTING CONDUIT NO STAGE---------------------")
 
-const AddBlock = new LogicBlock({
-    inPortNames:["A","B"],
+const AddBlock = new ProgrammableClay({
+    inputNames:["A","B"],
     fx:(ports)=>{
         ports.C = ports.A + ports.B;
     }
 })
 
-class LogBlock extends LogicBlock{
+class LogBlock extends ProgrammableClay{
     constructor(props){        
         super(props);
-        this.props.inPortNames = ["IN"],
+        this.props.inputNames = ["IN"],
         this.props.fx = (ports)=>{
             console.log("Logging: " ,ports.IN);
         }
@@ -37,8 +37,8 @@ blink.signal = 13;
 console.log("---------------------TESTING CONDUIT STAGED---------------------")
 
 
-const MultBlock = new LogicBlock({
-    inPortNames:["A","B"],
+const MultBlock = new ProgrammableClay({
+    inputNames:["A","B"],
     staged:1,
     fx:(ports)=>{        
         ports.C = ports.A * ports.B;
