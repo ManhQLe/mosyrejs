@@ -1,3 +1,4 @@
+
 const mar3 = require("../mar3");
 const {Clay,ProgrammableClay,PropClay,Conduit} = mar3;
 
@@ -34,8 +35,7 @@ const c2 = new ProgrammableClay({
     "fx":function(ports){
         console.log(ports.A);
         console.log(ports.B);
-        ports.A = 5;        
-        ports.A = 5;     
+     
         //ports.B = 1.5;
     },
     staged:true,
@@ -46,7 +46,15 @@ Clay.connect(c1,c2,"B");
 
 Clay.vibrate(c2,"A",1,c);
 Clay.vibrate(c2,"B",3,c1);
-//Clay.vibrate(c2,"B",4,c1);
+Clay.vibrate(c2,"B",4,c1);
+Clay.vibrate(c2,"B",5,c1);
+Clay.vibrate(c2,"B",6,c1);
+setTimeout(()=>{
+    Clay.vibrate(c2,"A",5,c);
+    Clay.vibrate(c2,"B",8,c1);
+    
+},2000)
+
 
 
 
