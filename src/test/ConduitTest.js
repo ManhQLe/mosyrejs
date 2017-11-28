@@ -1,19 +1,19 @@
 const mar3 = require("../mar3");
 const {
     Clay,
-    ProgrammableClay,
+    BehavioralClay,
     Conduit,
     LogicBlock
 } = mar3;
 const readline = require('readline');
 
 class Logger extends LogicBlock {
-    definePorts() {
-        return ["TEXT"]
+    constructor(agm){
+        super(agm);
+        this.connectPoints = ["TEXT"]
     }
-
-    logic(props) {
-        console.log(props.Name, "says:", this.TEXT);
+    logic(agreement) {
+        console.log(agreement.Name, "says:", this.TEXT);
     }
 }
 
@@ -40,8 +40,9 @@ for (var i = 0; i < 2; i++)
 console.log("----------------------2INPUT TEST---------------------------")
 
 class AddBlock extends LogicBlock{
-    definePorts(){
-        return ["A","B"];
+    constructor(agm){
+        super(agm);
+        this.connectPoints = ["A","B"]
     }
     logic(){
         this.C = this.A + this.B;
@@ -53,4 +54,4 @@ Conduit.link(Add,"C","TEXT",Logger3);
 var linka = Conduit.link(Add,"A");
 var linkb = Conduit.link(Add,"B");
 linka.signal = 1;
-    linkb.signal = 1;
+linkb.signal = 1;

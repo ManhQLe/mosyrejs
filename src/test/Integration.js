@@ -1,22 +1,22 @@
 const mar3 = require("../mar3");
-const {Clay,ProgrammableClay,Conduit} = mar3;
+const {Clay,BehavioralClay,Conduit} = mar3;
 
 
 console.log("---------------------TESTING CONDUIT NO STAGE---------------------")
 
-const AddBlock = new ProgrammableClay({
-    inputNames:["A","B"],
-    fx:(ports)=>{
-        ports.C = ports.A + ports.B;
+const AddBlock = new BehavioralClay({
+    connectPoints:["A","B"],
+    response: center=>{
+        center.C = center.A + center.B;
     }
 })
 
-class LogBlock extends ProgrammableClay{
+class LogBlock extends BehavioralClay{
     constructor(props){        
         super(props);
-        this.props.inputNames = ["IN"],
-        this.props.fx = (ports)=>{
-            console.log("Logging: " ,ports.IN);
+        this.connectPoints = ["IN"],
+        this.response = (center)=>{
+            console.log("Logging: " ,center.IN);
         }
     }
 }
@@ -37,11 +37,11 @@ blink.signal = 13;
 console.log("---------------------TESTING CONDUIT STAGED---------------------")
 
 
-const MultBlock = new ProgrammableClay({
-    inputNames:["A","B"],
+const MultBlock = new BehavioralClay({
+    connectPoints:["A","B"],
     staged:1,
-    fx:(ports)=>{        
-        ports.C = ports.A * ports.B;
+    response:(center)=>{        
+        center.C = center.A * center.B;
     }
 })
 const Logger2 = new LogBlock();
