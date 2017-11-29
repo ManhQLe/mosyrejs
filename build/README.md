@@ -1,15 +1,16 @@
-# Overview of MAR architecture
+# Overview of MoSyRe architecture
 
-M.A.R is a shorthand notation of **M**odular, **A**synchronous and **R**eative, properties of modern software architecture. This architecture expreses the fundametal principle of **Change**.
+MoSyRe is a shorthand notation for **M**odularity, **S**ynchronicity and **R**eativeness, commonly-seen properties of modern software architecture. This architecture is designed to facilitate synchronicity between individual members in a coherent manner. Such that any change occurs in the connection/network, can be conveyed properly to where it is needed.
+
+This architecture expreses the fundametal principle of **Change**
 
 > One change leads to other changes.
 
+## Fundametals
 
- 
+# Introduction to MoSyRe JS framework
 
-# Introduction to MAR3
-
-MAR3 is a javascript library implements MAR architecture. 
+MosyRe.js is a javascript library implements MoSyRe architecture.
 
 
 
