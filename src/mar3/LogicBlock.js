@@ -1,18 +1,11 @@
 'use strict'
 const Clay = require('./Clay');
-const ProgrammableClay = require('./ProgrammableClay');
+const BehavioralClay = require('./BehavioralClay');
 
-class LogicBlock extends ProgrammableClay {
-    constructor(props) {        
-        super(props);
-        Object.assign(this.props, {
-            "inputNames": this.definePorts(),
-            "fx": (ports) => this.logic.call(ports, this.props)
-        })
-    }
-
-    definePorts() {
-        return [];
+class LogicBlock extends BehavioralClay {
+    constructor(agreement) {        
+        super(agreement);
+        this.response =  (center) => this.logic.call(center, this.agreement)      
     }
 
     logic() {}

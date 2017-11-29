@@ -2,17 +2,17 @@
 
 class Clay {
    
-    onCommunication(fromClay, atMedium, signal) {}
+    onCommunication(fromClay, atConnectPoint, signal) {}
 
-    onConnection(withClay,atMedium){}
+    onConnection(withClay,atConnectPoint){}
 
-    static connect(clay1,clay2,atMedium){
-        clay1.onConnection(clay2,atMedium);
-        clay2.onConnection(clay1,atMedium);
+    static connect(clay1,clay2,atConnectPoint){
+        clay1.onConnection(clay2,atConnectPoint);
+        clay2.onConnection(clay1,atConnectPoint);
     }
 
-    static vibrate(clay,atMedium,signal,soureClay){
-        clay.onCommunication(soureClay,atMedium,signal);
+    static vibrate(clay,atConnectPoint,signal,soureClay){
+        clay.onCommunication(soureClay,atConnectPoint,signal);
     }    
 }
 

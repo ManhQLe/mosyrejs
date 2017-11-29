@@ -2,11 +2,10 @@
 
 const Clay = require('./Clay');
 const Conduit = require('./Conduit');
-const ProgrammableClay = require('./ProgrammableClay');
-const SynBlock = require('./SynBlock')
+const BehavioralClay = require('./BehavioralClay');
 const LogicBlock = require('./LogicBlock')
-const PropClay = require('./PropClay')
+const AttribClay = require('./AttribClay')
 
 module.exports ={
-    Clay,Conduit,ProgrammableClay,SynBlock,LogicBlock,PropClay
+    Clay,Conduit,BehavioralClay,LogicBlock,AttribClay
 }
