@@ -1,10 +1,10 @@
-const mar3 = require("../mar3");
+const mosyrejs = require("../mosyrejs");
 const {
     Clay,
     BehavioralClay,
     Conduit,
     LogicBlock
-} = mar3;
+} = mosyrejs;
 const readline = require('readline');
 
 class Logger extends LogicBlock {

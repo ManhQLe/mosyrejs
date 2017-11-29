@@ -1,6 +1,6 @@
 
-const mar3 = require("../mar3");
-const {Clay,ProgrammableClay,PropClay,Conduit} = mar3;
+const mosyrejs = require("../mosyrejs");
+const {Clay,ProgrammableClay,PropClay,Conduit} = mosyrejs;
 
 class Clay2 extends PropClay{
     constructor(props){

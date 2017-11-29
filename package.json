@@ -1,15 +1,15 @@
 {
-  "name": "mar3",
+  "name": "mosyrejs",
   "version": "1.0.0",
   "description": "Wonderful Circuitry",
-  "main": "mar3/index.js",
+  "main": "mosyrejs/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "build.cmd"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ManhQLe/mar3.git"
+    "url": "git+https://github.com/ManhQLe/mosyrejs.git"
   },
   "keywords": [
     "mar"
@@ -17,9 +17,9 @@
   "author": "Manh Le",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ManhQLe/mar3/issues"
+    "url": "https://github.com/ManhQLe/mosyrejs/issues"
   },
-  "homepage": "https://github.com/ManhQLe/mar3#readme",
+  "homepage": "https://github.com/ManhQLe/mosyrejs#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",

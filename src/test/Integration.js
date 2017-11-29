@@ -1,5 +1,5 @@
-const mar3 = require("../mar3");
-const {Clay,BehavioralClay,Conduit} = mar3;
+const mosyrejs = require("../mosyrejs");
+const {Clay,BehavioralClay,Conduit} = mosyrejs;
 
 
 console.log("---------------------TESTING CONDUIT NO STAGE---------------------")

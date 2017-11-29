@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/mar3/index.js',
+    entry: './src/mosyrejs/index.js',
     output: {
         path: path.join(__dirname, 'build/mar3'),
-        filename: 'mar3.min.js'
+        filename: 'mosyrejs.min.js'
     },
     module: {
         loaders: [{

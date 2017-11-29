@@ -1,5 +1,5 @@
-const mar3 = require("../mar3");
-const {Clay,Conduit,LogicBlock} = mar3;
+const mosyrejs = require("../mosyrejs");
+const {Clay,Conduit,LogicBlock} = mosyrejs;
 const readline = require('readline');
 class AddBlock extends LogicBlock{
     definePorts(){
