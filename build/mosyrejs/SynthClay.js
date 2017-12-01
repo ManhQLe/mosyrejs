@@ -1,9 +1,9 @@
 'use strict'
 
-const AttribClay = require("./AttribClay");
+const PropClay = require("./PropClay");
 const Conduit = require("./Conduit");
 
-class SynthClay extends AttribClay {
+class SynthClay extends PropClay {
     constructor(props){
         super(props);        
         this.createProp("portDefinition",{})
@@ -18,13 +18,13 @@ class SynthClay extends AttribClay {
     onConnection(withClay,atMedium){
         const def = this.portDefinition;
         const clay = def[atMedium];
-        clay?AttribClay.connect(withClay,clay,atMedium):1
+        clay?PropClay.connect(withClay,clay,atMedium):1
     }
 
     onCommunication(fromClay,atMedium,signal){
         const def = this.portDefinition;
         const clay = def[atMedium];
-        clay?AttribClay.vibrate(clay,atMedium,signal):1;
+        clay?PropClay.vibrate(clay,atMedium,signal):1;
     }
 }
 
