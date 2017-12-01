@@ -1,13 +1,13 @@
 'use strict'
 
-const PropClay = require("./PropClay");
+const AttribClay = require("./AttribClay");
 const Conduit = require("./Conduit");
 
-class SynClay extends PropClay {
+class SynthClay extends AttribClay {
     constructor(props){
         super(props);        
         this.createProp("portDefinition",{})
-        this.createProp("buildfx",SynClay.CONST.defaultBuild);
+        this.createProp("buildfx",SynthClay.CONST.defaultBuild);
 
         //Building and merging port
         var def = this.buildfx();
@@ -18,21 +18,21 @@ class SynClay extends PropClay {
     onConnection(withClay,atMedium){
         const def = this.portDefinition;
         const clay = def[atMedium];
-        clay?PropClay.connect(withClay,clay,atMedium):1
+        clay?AttribClay.connect(withClay,clay,atMedium):1
     }
 
     onCommunication(fromClay,atMedium,signal){
         const def = this.portDefinition;
         const clay = def[atMedium];
-        clay?PropClay.vibrate(clay,atMedium,signal):1;
+        clay?AttribClay.vibrate(clay,atMedium,signal):1;
     }
 }
 
-SynClay.CONST ={
+SynthClay.CONST ={
     defaultBuild:function(){
         return {}
     }
 }
 
-module.exports = SynClay;
+module.exports = SynthClay;
 
