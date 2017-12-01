@@ -3,16 +3,16 @@ const {
     Clay,
     BehavioralClay,
     Conduit,
-    LogicBlock
+    LogicalClay
 } = mosyrejs;
 const readline = require('readline');
 
-class Logger extends LogicBlock {
+class Logger extends LogicalClay {
     constructor(agm){
         super(agm);
         this.connectPoints = ["TEXT"]
     }
-    logic(agreement) {
+    logicAtCenter(agreement) {
         console.log(agreement.Name, "says:", this.TEXT);
     }
 }
@@ -39,12 +39,12 @@ for (var i = 0; i < 2; i++)
 
 console.log("----------------------2INPUT TEST---------------------------")
 
-class AddBlock extends LogicBlock{
+class AddBlock extends LogicalClay{
     constructor(agm){
         super(agm);
         this.connectPoints = ["A","B"]
     }
-    logic(){
+    logicAtCenter(){
         this.C = this.A + this.B;
     }
 }

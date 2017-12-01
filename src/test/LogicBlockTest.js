@@ -1,29 +1,35 @@
 const mosyrejs = require("../mosyrejs");
-const {Clay,Conduit,LogicBlock} = mosyrejs;
+const {Clay,Conduit,LogicalClay} = mosyrejs;
 const readline = require('readline');
-class AddBlock extends LogicBlock{
-    definePorts(){
-        return ["A","B"];
+
+class AddBlock extends LogicalClay{    
+    constructor(aggrement){
+        super(aggrement);
+        this.connectPoints = ["A","B"];
     }
-    logic(){
+    logicAtCenter(){
         this.C = this.A + this.B;
     }
 }
-class MultBlock extends LogicBlock{
-    definePorts(){
-        return ["MA","MB"];
+class MultBlock extends LogicalClay{
+    constructor(aggrement){
+        super(aggrement);
+        this.connectPoints = ["MA","MB"]
     }
-    logic(){
+    
+    logicAtCenter(){
         console.log(this.MA,"*",this.MB,"=", this.MA*this.MB );
         this.C = this.MA * this.MB;
     }
 }
 
-class LogBlock extends LogicBlock{
-    definePorts(){
-        return ["TEXT"];
+class LogBlock extends LogicalClay{
+    constructor(aggrement){
+        super(aggrement);
+        this.connectPoints = ["TEXT"]
     }
-    logic(props){
+    
+    logicAtCenter(props){
         console.log(`Logger (${props.Name}) says:`,this.TEXT);
     }
 }
