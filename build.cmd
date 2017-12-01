@@ -1,4 +1,5 @@
 @echo off
+del build\mosyrejs\*.* /Y
 
 copy src\mosyrejs\*.js build\mosyrejs /Y
 copy README.md build /Y

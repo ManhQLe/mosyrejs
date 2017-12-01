@@ -3,11 +3,11 @@
 const PropClay = require("./PropClay");
 const Conduit = require("./Conduit");
 
-class SynBlock extends PropClay {
+class SynClay extends PropClay {
     constructor(props){
         super(props);        
         this.createProp("portDefinition",{})
-        this.createProp("buildfx",SynBlock.CONST.defaultBuild);
+        this.createProp("buildfx",SynClay.CONST.defaultBuild);
 
         //Building and merging port
         var def = this.buildfx();
@@ -28,11 +28,11 @@ class SynBlock extends PropClay {
     }
 }
 
-SynBlock.CONST ={
+SynClay.CONST ={
     defaultBuild:function(){
         return {}
     }
 }
 
-module.exports = SynBlock;
+module.exports = SynClay;
 
