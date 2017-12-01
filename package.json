@@ -1,8 +1,8 @@
 {
   "name": "mosyrejs",
-  "version": "1.0.0",
-  "description": "Wonderful Circuitry",
-  "main": "mosyrejs/index.js",
+  "version": "1.0.2",
+  "description": "Wonderful way to synchronicity",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "build.cmd"
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/ManhQLe/mosyrejs.git"
   },
   "keywords": [
-    "mar"
+    "mosyrejs"
   ],
   "author": "Manh Le",
   "license": "MIT",

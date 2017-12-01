@@ -1,8 +1,8 @@
 {
   "name": "mosyrejs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wonderful way to synchronicity",
-  "main": "mosyrejs/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "build.cmd"

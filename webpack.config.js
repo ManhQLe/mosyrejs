@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     entry: './src/mosyrejs/index.js',
     output: {
-        path: path.join(__dirname, 'build/mosyrejs'),
+        path: path.join(__dirname, 'build'),
         filename: 'mosyrejs.min.js'
     },
     module: {
