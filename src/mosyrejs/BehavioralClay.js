@@ -16,13 +16,13 @@ function* sensor(me){
             signalStore[connectPoint] = signal;                
             collected.add(connectPoint);
             if(collected.size == connectPoints.length){      
-                me.staged?collected.clear():0;
+                me.staged&&collected.clear();
                 setTimeout.call(me,me.response,0,me.__.center);                
             }                
         }
         else{
             const clay = contacts.get(connectPoint)
-            clay?Clay.vibrate(clay,connectPoint,signal,me):1;                
+            clay&&Clay.vibrate(clay,connectPoint,signal,me);
         }
     }
 }
@@ -35,7 +35,7 @@ class BehavioralClay extends AttribClay {
         this.__.signalStore = {};
         this.__.sensor = sensor(this);
 
-        /*-------------------Agreement defintion--------------------*/
+        /*-------------------Agreement definition--------------------*/
         this.createProp("staged", false);
         this.createProp("connectPoints",[]);
         this.createProp("response", function () {})

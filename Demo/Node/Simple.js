@@ -13,4 +13,8 @@ class Adder extends LogicalClay
     }
 }
 
+var Adder1 = new Adder();
+
+
+
 
