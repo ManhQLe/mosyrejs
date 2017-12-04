@@ -55,7 +55,7 @@ This new paradigm enforces thinking in terms of **connection**, **connectivity**
 
 Execution of the entire network of clays cannot be thought nor programmed in terms of sequential ordered executions but multi-order parallel executions in synchronicity. Architecture of software will now be expressed as topology of network of clays. It is an art form in this type of programming to design clay functions and network architectures.
 
-> Predictablity of the outcomes can only be obtained when network is designed appropriately.
+Predictablity of the outcomes can only be obtained when network is designed appropriately. This is because clays are not responsile for coordination and do not have the capabilities to control the entire flow of the network. We certainly can design specific clays to act as facilitators for synchronicity in specific regions of network so that the outcomes are expected. Larger network will requires more facilitators.
 
 
 # Introduction to MoSyRe JS framework
