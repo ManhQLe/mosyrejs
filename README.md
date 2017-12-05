@@ -13,7 +13,7 @@ This architecture expreses the fundametal principle of **Change**
 
 ### Clay
 
-> A clay, as the name suggests, has no shape, no specific feature and is unfathomable. Its main quality is to connect and is capable of express/vibrate core frequency of itself ONCE being crystalized/went through crystalization process AND being in connection with other clays.
+> A clay, as the name suggests, has no shape, no specific feature and is unfathomable. Its main quality is to connect and is capable of expressing core frequency of itself ONCE being crystalized/went through crystalization process AND being in connection with other clays.
 
 ### Attribute Clay
 
