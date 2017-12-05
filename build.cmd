@@ -1,6 +1,6 @@
 @echo off
 
-del build\*.* /Y
+del build\*.* /Q
 copy src\mosyrejs\*.js build /Y
 copy README.md build /Y
 copy package.json build /Y

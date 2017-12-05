@@ -21,7 +21,6 @@ const Conduit = require('mosyrejs/Conduit');
          this.connectPoints=["A","B"];         
      }
      logicAtCenter(){  
-
         //Emulate Delay                   
         setTimeout(()=>{
             this.PRODUCT = this.A * this.B;
@@ -49,21 +48,39 @@ class Adder extends LogicalClay
 class Logger extends LogicalClay{
     constructor(a){
         super(a);
-        this.connectPoints = ["TEXT"]
+        this.connectPoints = ["DATA"]
     }
     
-    constructor()
+    logicAtCenter(props){
+        console.log(`[${props.Name}] Logging value: ` + this.DATA);
+    }
 }
 
 let Adder1 = new Adder();
 let Mult1 = new Mult();
-let Logger1 = new Logger();
+let FinalLog = new Logger({Name:"F1n4l"});
+let SumLog = new Logger({Name:"5um"});
 
 const linkA = Conduit.link(Adder1,"A");
 const linkB = Conduit.link(Adder1,"B");
 const linkC = Conduit.link(Mult1,"B");
-Conduit.link(Adder1,"SUM","A",Mult1);
+const linkOfSum =  Conduit.link(Adder1,"SUM","A",Mult1);
+linkOfSum.connect(SumLog,"DATA");
 
+Conduit.link(Mult1,"PRODUCT","DATA",FinalLog);
+
+
+
+console.log("Sending 2 -> Add(A)");
+linkA.signal = 2;
+
+console.log("Sending 3 -> Add(B)");
+linkB.signal = 3;
+
+console.log("Sending 3.14 -> Mult(B)");
+linkC.signal = 3.14;
+
+console.log("Waiting for answer...");
 
 
 

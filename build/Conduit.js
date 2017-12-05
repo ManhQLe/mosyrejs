@@ -13,7 +13,9 @@ class Conduit extends AttribClay {
     }
 
     onConnection(withClay, atConnectPoint) {
-        const { contacts } = this;
+        const {
+            contacts
+        } = this;
 
         const x = contacts.find(c => {
             return c.withClay === withClay
@@ -27,15 +29,15 @@ class Conduit extends AttribClay {
         // });
 
         !(
-            x 
-            && (
-                this.isSameConnectionPoint(x.connectPoint,atConnectPoint) 
-                || (x.withClay instanceof Conduit)
-            ) 
-        )
-        && contacts.push({
+            x &&
+            (
+                this.isSameConnectionPoint(x.connectPoint, atConnectPoint) ||
+                (x.withClay instanceof Conduit)
+            )
+        ) &&
+        contacts.push({
             withClay,
-            connectPoint:atConnectPoint
+            connectPoint: atConnectPoint
         });
 
     }
@@ -44,23 +46,35 @@ class Conduit extends AttribClay {
         const {
             contacts
         } = this.__;
-        for (const c of contacts) {            
+        for (const c of contacts) {
             const {
                 withClay,
                 connectPoint
             } = c;
-           
-            withClay !== fromClay 
-            && !this.isSameConnectionPoint(connectPoint,atConnectPoint)
-            && setTimeout(Clay.vibrate, 0, withClay, connectPoint, signal, this);            
+
+            withClay !== fromClay &&
+                !this.isSameConnectionPoint(connectPoint, atConnectPoint) &&
+                setTimeout(Clay.vibrate, 0, withClay, connectPoint, signal, this);
         }
+    }
+
+    connect(fromClay, atConnectionPoint) {
+        this.onConnection(fromClay, atConnectionPoint);
     }
 }
 
-Conduit.link = function (clay1, p1, p2, clay2) {    
+Conduit.link = function (clay1, p1, p2, clay2) {
     var con = new Conduit();
     Clay.connect(clay1, con, p1);
     (p2 && clay2) ? Clay.connect(clay2, con, p2): 1;
+    return con;
+}
+
+Conduit.multiLink = function (...args) {
+    var con = new Conduit();
+    for (let x = 0; x < args.length; x += 2) {
+        Clay.connect(args[x], con, args[x + 1])
+    }
     return con;
 }
 
