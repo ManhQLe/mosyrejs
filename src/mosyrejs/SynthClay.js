@@ -4,35 +4,55 @@ const AttribClay = require("./AttribClay");
 const Conduit = require("./Conduit");
 
 class SynthClay extends AttribClay {
-    constructor(props){
-        super(props);        
-        this.createProp("portDefinition",{})
-        this.createProp("buildfx",SynthClay.CONST.defaultBuild);
-
+    constructor(props) {
+        super(props);
+        this.createProp("buildfx", SynthClay.CONST.defaultBuild);
         //Building and merging port
-        var def = this.buildfx();
-        const {inPorts} = this;
-        Object.assign(inPorts,this.buildfx());
+        this.contacts = new Map();
+
+        this.__.map = this.buildfx();
+        const {
+            outward
+        } = this.__.map;
+
+        var keys = Object.keys(outward);
+        const insiders = this.__.insiders = [];
+        keys.forEach(k => {
+            const pair = outward[k];
+            const sym = {};
+            insiders.push(Conduit.link(this,sym,pair[0],pair[1]));
+        });
     }
 
-    onConnection(withClay,atMedium){
-        const def = this.portDefinition;
-        const clay = def[atMedium];
-        clay?AttribClay.connect(withClay,clay,atMedium):1
+    onConnection(withClay, atConnectionPoint) {
+        this.contacts.set(atConnectionPoint, withClay);
     }
 
-    onCommunication(fromClay,atMedium,signal){
-        const def = this.portDefinition;
-        const clay = def[atMedium];
-        clay?AttribClay.vibrate(clay,atMedium,signal):1;
+    onCommunication(fromClay, atConnectionPoint, signal) {
+        const {insiders} = this.__;
+        const clay = insiders.find(c=>c===fromClay);
+        if(clay){            
+        }
     }
 }
 
-SynthClay.CONST ={
-    defaultBuild:function(){
+SynthClay.CONST = {
+    defaultBuild: function () {
         return {}
     }
 }
 
-module.exports = SynthClay;
+//Map of built
+x = {
+    "inward": {
+        "A": ["A", clay],
+        "B": ["X", clay2]
+    },
+    "outward": {
+        "D": ["A", clay2]
+    }
+}
 
+
+
+module.exports = SynthClay;

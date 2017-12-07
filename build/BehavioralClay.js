@@ -31,7 +31,6 @@ class BehavioralClay extends AttribClay {
     constructor(agreement) {
         super(agreement);   
         this.contacts = new Map();
-
         this.__.signalStore = {};
         this.__.sensor = sensor(this);
 
@@ -49,12 +48,11 @@ class BehavioralClay extends AttribClay {
                 target.__.sensor.next({connectPoint,signal});
                 return true;
             }
-        });
-
-        this.__.sensor.next();
+        });      
+        this.__.sensor.next(); 
     }
 
-    onConnection(withClay, atConnectPoint) {        
+    onConnection(withClay, atConnectPoint) {  
         const {contacts} = this;               
         contacts.set(atConnectPoint,withClay);
     }
@@ -65,9 +63,8 @@ class BehavioralClay extends AttribClay {
 
         connectPoints.find((c)=>{return this.isSameConnectionPoint(c,atConnectPoint)})
         &&contacts.get(atConnectPoint) === fromClay
-           && (this.__.center[atConnectPoint] = signal)                    
+           && (this.__.center[atConnectPoint] = signal)
     }
-
 }
 
 module.exports = BehavioralClay;

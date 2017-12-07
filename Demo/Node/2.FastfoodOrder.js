@@ -5,11 +5,16 @@ const cur = require('./cursor');
 /**
  * SIMPLE ORDER
  * 
- * 1. Order a burger
- *  a. Select number of patties (2sec delay per patty), 1.5 dollar/ patty
- *  b. Select bun
- *  c. Add cheese + bacon
- *  
+ * Setup of the game
+ * Actors (clays):
+ *  . Customer
+ *  . Orderer Taker
+ *  . Money Collector
+ *  . Patty Griller
+ *  . Buns Warmer
+ *  . Cheese Slicer
+ *  . Burger Dresser
+ *  . Order Wrapper
  * 
  * 
  */

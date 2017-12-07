@@ -5,32 +5,28 @@ const Conduit = require("./Conduit");
 
 class SynthClay extends AttribClay {
     constructor(props){
-        super(props);        
-        this.createProp("portDefinition",{})
-        this.createProp("buildfx",SynthClay.CONST.defaultBuild);
+        super(props);                                    
+        this.createProp("buildfx",SynthClay.CONST.defaultBuild)
+        this.contacts = new Map();
+    }
+    
+    
 
-        //Building and merging port
-        var def = this.buildfx();
-        const {inPorts} = this;
-        Object.assign(inPorts,this.buildfx());
+    onConnection(withClay,atConnectionPoint){
+        
     }
 
-    onConnection(withClay,atMedium){
-        const def = this.portDefinition;
-        const clay = def[atMedium];
-        clay?AttribClay.connect(withClay,clay,atMedium):1
-    }
-
-    onCommunication(fromClay,atMedium,signal){
-        const def = this.portDefinition;
-        const clay = def[atMedium];
-        clay?AttribClay.vibrate(clay,atMedium,signal):1;
+    onCommunication(withClay,atConnectionPoint,signal){
+        
     }
 }
 
 SynthClay.CONST ={
     defaultBuild:function(){
         return {}
+    },
+    CrystalizationProces:function(){
+        
     }
 }
 

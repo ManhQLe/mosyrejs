@@ -25,7 +25,7 @@ This architecture expreses the fundametal principle of **Change**
 
 ### OverClay / SynthClay (synthesis/composite)
 
-> OverClay is Behavioral Clay, its functionality is functionalites of individual clays in totality. OverClay can be thought as composite clay. This type of clay can encapsulate small or large network of clays so that it can be a unit clay in larger networks.
+> OverClay is Attrib Clay, its functionality is functionalites of individual clays in totality. OverClay can be thought as composite clay. This type of clay can encapsulate small or large network of clays so that it can be a unit clay in larger networks.
 
 ### Conduit
 
