@@ -7,31 +7,36 @@ class SynthClay extends AttribClay {
     constructor(props) {
         super(props);
         this.createProp("buildfx", SynthClay.CONST.defaultBuild);
-        //Building and merging port
-        this.contacts = new Map();
+        this.contacts = [];
+        const builtin = this.__.builtin = this.buildfx();
 
-        this.__.map = this.buildfx();
-        const {
-            outward
-        } = this.__.map;
 
-        var keys = Object.keys(outward);
-        const insiders = this.__.insiders = [];
-        keys.forEach(k => {
-            const pair = outward[k];
-            const sym = {};
-            insiders.push(Conduit.link(this,sym,pair[0],pair[1]));
+        builtin.forEach(triple => {
+            const clay = triple[1];
+            const internalPoint = triple[2];            
+            AttribClay.connect(this,clay,internalPoint);            
         });
+        
     }
 
     onConnection(withClay, atConnectionPoint) {
-        this.contacts.set(atConnectionPoint, withClay);
+        const contacts = this.contacts;
+        const r = contacts.find(x=>{
+            return this.isSameConnectionPoint(x[0],atConnectionPoint)
+            && x[1] === withClay
+        })
+        !r&&contacts.push([atConnectionPoint,withClay]);
+
     }
 
     onCommunication(fromClay, atConnectionPoint, signal) {
-        const {insiders} = this.__;
-        const clay = insiders.find(c=>c===fromClay);
-        if(clay){            
+        //Does it come from inside;
+        const {builtin} = this.__;
+        const pair = builtin.find(x=>{
+            return x[1] === fromClay
+        })
+        if(pair){ //From Intenral
+            
         }
     }
 }
@@ -43,15 +48,11 @@ SynthClay.CONST = {
 }
 
 //Map of built
-x = {
-    "inward": {
-        "A": ["A", clay],
-        "B": ["X", clay2]
-    },
-    "outward": {
-        "D": ["A", clay2]
-    }
-}
+// x = {
+//     ["A", clay  ,"X"],
+//     ["B", clay2 ,"Y"],
+//     ["D", clay2 ,"B"]
+// }
 
 
 
