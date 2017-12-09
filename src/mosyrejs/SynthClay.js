@@ -11,9 +11,9 @@ class SynthClay extends AttribClay {
         const builtin = this.__.builtin = this.buildfx();
 
 
-        builtin.forEach(triple => {
-            const clay = triple[1];
-            const internalPoint = triple[2];            
+        builtin.forEach(trinity => {
+            const clay = trinity[1];
+            const internalPoint = trinity[2];            
             AttribClay.connect(this,clay,internalPoint);            
         });
         
@@ -30,13 +30,22 @@ class SynthClay extends AttribClay {
     }
 
     onCommunication(fromClay, atConnectionPoint, signal) {
-        //Does it come from inside;
+        
         const {builtin} = this.__;
-        const pair = builtin.find(x=>{
-            return x[1] === fromClay
+        const {contacts} = this;
+        const trinity = builtin.find(x=>{
+            return x[1] === fromClay && this.isSameConnectionPoint(x[2],atConnectionPoint);
         })
-        if(pair){ //From Intenral
-            
+        if(trinity){ //From Internal
+            const clay = contacts.get(trinity[0]);
+            clay && AttribClay.vibrate(clay,trinity[0],sinal,this);
+        }
+        else{
+            builtin.forEach(tri=>{
+                this.isSameConnectionPoint(atConnectionPoint,x[0])
+                && AttribClay.vibrate(tri[1],tri[2],sinal,this);
+
+            })
         }
     }
 }
