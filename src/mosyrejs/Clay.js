@@ -11,7 +11,7 @@ class Clay {
         clay2.onConnection(clay1, atConnectPoint);
     }
 
-    static vibrate(clay, atConnectPoint, signal, soureClay) {
+    static vibrate(clay, atConnectPoint, signal, sourceClay) {
         clay.onCommunication(soureClay, atConnectPoint, signal);
     }
 }

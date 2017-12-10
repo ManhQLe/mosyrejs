@@ -58,8 +58,8 @@ class Conduit extends AttribClay {
         }
     }
 
-    connect(fromClay, atConnectionPoint) {
-        this.onConnection(fromClay, atConnectionPoint);
+    connect(withClay, atConnectionPoint) {
+        this.onConnection(withClay, atConnectionPoint);
     }
 }
 

@@ -62,7 +62,61 @@ Predictablity of the outcomes can only be obtained when network is designed appr
 
 MosyRe.js is a javascript library implements MoSyRe architecture.
 
+## Class Diagram
+
+```
+    Symbols & Meanings
+
+    ◆           Inheritable function 
+    ▣           Static function
+    ■           Inheritable Property(default value)  
+    ClassX ◄──   Inherit from ClassX    
+```
+
+
+
+```
+    Clay ◄──┬── AttribClay ◄────┬──── BehavioralClay ◄──── LogicalClay
+            |                   |
+            |                   ├──── Conduit
+            |                   |
+            └── UniClay         └──── SynthClay
+             
+```
+
+## Programming Interface
+### Clay
+```javascript
+    Clay(agreement): constructor
+
+        ◆ onConnection(withClay, atPoint): void
+        ◆ onCommunication(fromClay, atPoint, signal): void
+
+        ▣ connect(clay1, clay2, atConnectPoint, atConnectPoint2)
+        ▣ vibrate(clay, atConnectPoint, signal, sourceClay)
+```
+### AttribClay
 
 ``` javascript
+    AttribClay(agreement): constructor
 
+        ◆ createProp(propName, defaultValue [, getfx, setfx, store]): void
+        ◆ isSameConnectionPoint(): Boolean
+
+        ■ agreement({})
+        ■ contacts (null)
+
+        ▣ createProp(Object, propName, defVal, getFx, setFx, storage): void
+```
+
+### BehavioralClay
+
+```javascript
+    BehavioralClay(agreement): constructor
+        
+    These folowing properties are intializable by agreement
+    ■ staged(false)
+    ■ connectPoints([])
+    ■ response(function(){})
+    ■ cystalize(function(){})
 ```

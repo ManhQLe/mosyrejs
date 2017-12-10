@@ -16,10 +16,18 @@ const cur = require('./cursor');
  *  . Burger Dresser
  *  . Order Wrapper
  * 
+ *  . Distributor
+ *  Items:
+ *      Cheese: Cheddar, Blue cheese, Swiss, Pepper Jack ($1 each)
+ *      Patty: 
+ *          
  * 
  */
 
-
-
-cur.clear();
-cur.write('123',0,2);
+const OrderTaker = new LogicalClay({
+    connectPoints:["ORDER"],
+    currentOrder:next,    
+    logic:(agg)=>{
+        
+    }
+})
