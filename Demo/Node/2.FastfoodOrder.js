@@ -1,33 +1,29 @@
 const LogicalClay = require('mosyrejs/LogicalClay');
+const BehavioralClay = require('mosyrejs/BehavioralClay');
 const Conduit = require('mosyrejs/Conduit');
 const cur = require('./cursor');
 
 /**
  * SIMPLE ORDER
  * 
- * Setup of the game
- * Actors (clays):
- *  . Customer
- *  . Orderer Taker
- *  . Money Collector
- *  . Patty Griller
- *  . Buns Warmer
- *  . Cheese Slicer
- *  . Burger Dresser
- *  . Order Wrapper
+ * Beef Grinder
+ * Patty Griller
+ * Buns Warmer
+ * Cheese Slicer
+ * Order Assembler
+ * Order Taker 
  * 
- *  . Distributor
- *  Items:
- *      Cheese: Cheddar, Blue cheese, Swiss, Pepper Jack ($1 each)
- *      Patty: 
- *          
- * 
+ *                                       (Ready to Order)
+ *         .-------------------------------<-----------------------------. 
+ *         |               .-------------.     .----------.              |
+ *         |          .->--+ Buns Warmer |-----| Dressing |---.          |
+ *  .------+------.   |    '-------------'     '----------'   |          |
+ *  | Order Taker |---'                                  .----+-------.  |
+ *  '------+----+-'   .---------------.                  | Assembling |--+
+ *         |    '-->--| Cheese Slicer |--.               '----+----+--'  
+ *         |          '---------------'  |                    |    |
+ *    .----+---------.        .----------+----.               |    |     .--------.
+ *    | Beef Grinder |--->----| Patty Griller |------>--------'    '-->--| Pickup |
+ *    '--------------'        '---------------'                          '--------'
  */
 
-const OrderTaker = new LogicalClay({
-    connectPoints:["ORDER"],
-    currentOrder:next,    
-    logic:(agg)=>{
-        
-    }
-})
