@@ -29,4 +29,4 @@ class UniflowClay extends Clay {
     }
 }
 
-export default UniflowClay;
+module.exports =  UniflowClay;
