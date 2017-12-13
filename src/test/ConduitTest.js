@@ -1,7 +1,7 @@
 const mosyrejs = require("../mosyrejs");
 const {
     Clay,
-    BehavioralClay,
+    ResponsiveClay,
     Conduit,
     LogicalClay
 } = mosyrejs;

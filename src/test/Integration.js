@@ -1,17 +1,17 @@
 const mosyrejs = require("../mosyrejs");
-const {Clay,BehavioralClay,Conduit} = mosyrejs;
+const {Clay,ResponsiveClay,Conduit} = mosyrejs;
 
 
 console.log("---------------------TESTING CONDUIT NO STAGE---------------------")
 
-const AddBlock = new BehavioralClay({
+const AddBlock = new ResponsiveClay({
     connectPoints:["A","B"],
     response: center=>{
         center.C = center.A + center.B;
     }
 })
 
-class LogBlock extends BehavioralClay{
+class LogBlock extends ResponsiveClay{
     constructor(props){        
         super(props);
         this.connectPoints = ["IN"],
@@ -37,7 +37,7 @@ blink.signal = 13;
 console.log("---------------------TESTING CONDUIT STAGED---------------------")
 
 
-const MultBlock = new BehavioralClay({
+const MultBlock = new ResponsiveClay({
     connectPoints:["A","B"],
     staged:1,
     response:(center)=>{        

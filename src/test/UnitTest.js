@@ -1,6 +1,6 @@
 
 const mosyrejs = require("../mosyrejs");
-const {Clay,ProgrammableClay,PropClay,Conduit} = mosyrejs;
+const {Clay,ResponsiveClay,PropClay,Conduit} = mosyrejs;
 
 class Clay2 extends PropClay{
     constructor(props){
@@ -29,14 +29,14 @@ const c1 = new Clay2({
     "Y":2
 })
 
-console.log("---------------------TESTING ProgrammableClay---------------------")
+console.log("---------------------TESTING ResponsiveClay---------------------")
 
-const c2 = new ProgrammableClay({
-    "fx":function(ports){
-        console.log(ports.A);
-        console.log(ports.B);
+const c2 = new ResponsiveClay({
+    "response":function(center){
+        console.log(center.A);
+        console.log(center.B);
      
-        //ports.B = 1.5;
+        //center.B = 1.5;
     },
     staged:true,
     "inputNames":["A","B"],

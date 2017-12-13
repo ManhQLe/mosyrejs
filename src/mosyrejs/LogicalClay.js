@@ -1,8 +1,8 @@
 'use strict'
 const Clay = require('./Clay');
-const BehavioralClay = require('./BehavioralClay');
+const ResponsiveClay = require('./ResponsiveClay');
 
-class LogicalClay extends BehavioralClay {
+class LogicalClay extends ResponsiveClay {
     constructor(agreement) {        
         super(agreement);
         this.createProp("logic",function(){});

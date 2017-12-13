@@ -27,7 +27,7 @@ function* sensor(me){
     }
 }
 
-class BehavioralClay extends AttribClay {
+class ResponsiveClay extends AttribClay {
     constructor(agreement) {
         super(agreement);   
         this.contacts = new Map();
@@ -70,4 +70,4 @@ class BehavioralClay extends AttribClay {
 
 }
 
-module.exports = BehavioralClay;
+module.exports = ResponsiveClay;
