@@ -65,6 +65,12 @@ Since the architecture is flexible and dynamic, one can think of many ways to im
 
 MosyRe.js is a javascript library implements MoSyRe architecture.
 
+# Installation
+
+> npm install mosyrejs --save
+
+# Usage
+
 
 ## Class Diagram
 
@@ -92,6 +98,73 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 ```
 
 ## Programming Interface
+
+### Quick Start
+
+    The end goal is to create clays, and connect them together
+    1. Create clay and define their behavior
+    2. Connect them together to perform complex tasks
+
+
+#### Example1
+
+    Create a network which performs (NumA + NumB) * NumC
+
+```        .------.      .------.      .--------.
+   NumA ---| ADD  |------| MULT |------| Logger |
+           '--+---'      '---+--'      '--------'
+   NumB ------'              |
+                    NumC ----'
+```
+
+``` javascript
+    const ResponsiveClay = require('mosyre/ResponsiveClay')
+    const Conduit = require('mosyre/Conduit')
+
+    const Add = new ResponsiveClay({
+        connectPoints:["A","B"],
+        response(center){
+            center.SUM = center.A + center.B
+        }
+    })
+
+    const Mult = new ResponsiveClay({
+        connectPoints:["A","B"],
+        response(center){
+            center.PRODUCT = center.A * center.B
+        }
+    })
+
+    const Log = new ResponsiveClay({
+        connectPoints:["INFO"],
+        response(center){
+            console.log(center.INFO)
+        }
+    })
+
+    //Connect
+
+    Conduit.link(Log,"INFO","PRODUCT",Mult);
+
+    const linkA = Conduit.link(Add,"A");
+    const linkB = Conduit.link(Add,"B");
+    Conduit.link(Add,"SUM","A",Mult);
+    const linkC = Conduit.link(Mult,"B");
+    
+    //Send information
+    linkA.signal = 2.3
+    linkB.signal = 4.3
+    linkC.signal = 5
+    
+```
+
+#### Example2
+    Still thinking on an interesting one :)
+``` javascript
+
+```
+
+
 ### Clay
 ```javascript
     Clay(agreement): constructor
@@ -162,7 +235,7 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 
     ◆ logicAtCenter(agreement): Boolean    
 
-    //LogicalClay is a quick template for creating template
+    //LogicalClay is a quick way for creating template
     
     class CircleArea extends LogicalClay{
         constructor(agr){
@@ -184,8 +257,6 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
     SynthClay(agreement): constructor
 
     ◆ build(): Object
-
-
 
 ```
 
