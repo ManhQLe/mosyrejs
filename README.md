@@ -121,7 +121,7 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 ```javascript
     ResponsiveClay(agreement): constructor
 
-    These folowing properties are intializable by agreement
+    //These folowing properties can be intializabled by agreement
     ■[G/S] staged(false)
     ■[G/S] connectPoints([]) 
     ■[G/S] response(function(){})
@@ -130,8 +130,28 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
     //Example of instantiation
 
     const Clay1 = new ResponsiveClay({
-        response()
+        connectPoints:["X","Y"],
+        response(center){
+            //Send sum of signals to Z connect point.
+            center.Z = center.X + center.Y
+        }
     })
+
+    //Example of inheritance
+
+    class ClayDoSqrt extends ResponsiveClay{
+        constructor(agg){
+            super(agg);
+
+            this.response = (center)=>{
+                //Send sqrt of signal to SQRT connect point
+                center.SQRT = Math.sqrt(center.X)
+            }
+        }
+    }
+
+    const Clay2 = new ClayDoSqrt();
+
 
 ```
 
@@ -141,6 +161,19 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
     LogicalClay(agreement):constructor
 
     ◆ logicAtCenter(agreement): Boolean    
+
+    //LogicalClay is a quick template for creating template
+    
+    class CircleArea extends LogicalClay{
+        constructor(agr){
+            super(agr);
+            this.connectPoints=["R"];
+        }        
+        logicAtCenter(agr){
+            this.AREA =  Math.sqrt(this.R * this.R * 
+        }
+    }
+
 
 ```
 
