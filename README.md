@@ -57,9 +57,6 @@ Execution of the entire network of clays cannot be thought nor programmed in ter
 
 Predictablity of the outcomes can only be obtained when network is designed appropriately. This is because clays are not responsile for coordination and do not have the capabilities to control the entire flow of the network. We certainly can design specific clays to act as facilitators for synchronicity in specific regions of network so that the outcomes are expected. Larger network will requires more facilitators.
 
-## Unification attribute of MoSyRe framework
-
-Since the architecture is flexible and dynamic, one can think of many ways to implement clays and frameworked them such that the framework can become a common pattern for programming. Clays implemented in different frameworks can join in connections and work with each other. This is where **Unification** attribute expressed due to observation that the main quality of clay is to connect. 
 
 # Introduction to MoSyRe JS framework
 
