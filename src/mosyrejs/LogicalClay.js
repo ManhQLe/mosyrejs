@@ -9,8 +9,8 @@ class LogicalClay extends ResponsiveClay {
         this.response =  (center) => this.logicAtCenter.call(center, this.agreement)      
     }
 
-    logicAtCenter() {
-        
+    logicAtCenter(agr) {
+        this.logic.call(agr,this);
     }
 }
 

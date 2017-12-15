@@ -10,14 +10,14 @@ process.stdin.setRawMode(true);
 /**
  *  SALES ORDER
  * 
- *                    .----------------------------------.          .----------------.
+ *                    .--------------------->------------.          .----------------.
  *                    |     .------------.               |          | EMAIL TRACKING |
- *                    +-->--| MARKETING  |--->-------.   |          '----+-----------'
- *                    |     '------------'           |   |               |
- *                    |     .---------------.    .---+---+-.       .-----+------.
- *                    +-->--| SHIPPING COST |->--| BILLING |--+-->-| SHIP ORDER |
- *    .--------.      |     '---------------'    '-+--+----'  |    '------------'
- *    | ORDER  |------+                       .----'  |       |    .--------------------.
+ *                    +-->--| MARKETING  |--->-------.   |          '-----+----------'
+ *                    |     '------------'           |   |                |
+ *                    |     .---------------.    .---+---+--.       .-----+------.
+ *                    +-->--| SHIPPING COST |->--| BILLING  |--->---| SHIP ORDER |
+ *    .--------.      |     '---------------'    '-+--+--+--'       '------------'
+ *    | ORDER  |------+                       .->--'  |  '-->-.    .--------------------.
  *    '--------'      |     .------------.    | .-----+----.  '->--| EMAIL BILL CHARGED |
  *                    '-->--| SALES COST |-->-+-| TAX COST |       '--------------------'
  *                          '------------'      '----------'
@@ -43,18 +43,53 @@ const ShippingCosts ={
     "MA":1.5
 }
 
+class Email extends LogicalClay{
+    constructor(agr){
+        super(agr);
+        this.connectPoints = ["EMAIL"]
+    }
+    logicAtCenter(agr){
+        const email = this.EMAIL;
+        console.log("Sending email to: "+ email.To);
+        console.log(email.Title);
+    }
+}
+
+
+const Ship = new LogicalClay({
+    connectPoints:["ORDER"],
+    logic(center){
+        console.log("Shipping order...");
+        const Order = center.ORDER;
+        setTimeout(()=>{
+            console.log("Order shipped");
+            center.EMAIL = {                
+                "To": Order.Customer.Email,
+                "Title":`Your Order ${Order.orderNumber} has been shipped`,
+                "Body":`Here is your tracking number ${Date.now()}. Please allow 3-5 business day for the order to arrived.`
+            }
+        },2000)
+    }
+})
+
 const Billing = new LogicalClay({
     connectPoints:["ORDER","COUPON","SALES","SHIPPING","TAX"],
     staged:true,
-    logic(){
-        const Order = this.ORDER;
+    logic(center){
+        const Order = center.ORDER;
         Order.Billing = {
-            "Sales": this.SALES,
-            "Shipping":this.SHIPPING,
-            "Tax" : this.TAX,
-            "SubTotal": this.SALES + this.SHIPPING,
-            "Total": this.SALES + this.SHIPPING + this.TAX,
-            "Coupon": this.COUPON
+            "Sales": center.SALES,
+            "Shipping":center.SHIPPING,
+            "Tax" : center.TAX,
+            "SubTotal": center.SALES + center.SHIPPING,
+            "Total": center.SALES + center.SHIPPING + center.TAX,
+            "Coupon": center.COUPON
+        }
+        center.SHIP = Order;
+        center.EMAIL = {
+            "To":Order.Customer.Email,
+            "Title":`Order confirmation ${DateTime.now()}`,
+            "Body":"Order has been bill: $" + Order.Billing.Total
         }
     }
 })
@@ -79,20 +114,21 @@ const Tax = new LogicalClay({
 
 const Marketing = new LogicalClay({
     connectPoints: ["ORDER"],
-    logic() {
+    logic(center) {
         if(Math.random()>.5){
-            this.COUPON = true
+            center.COUPON = true
         }
         else
-            this.COUPON = false;
+        center.COUPON = false;
     }
 })
 
 const Shipping = new LogicalClay({
     connectPoints:["ORDER"],
     ShippingCosts,
-    logic(agg){
+    logic(center){
         const Order = center.ORDER;
-        center.SHIPPINGCOST =  agg.ShippingCosts[Order.shipTo] || 8;
+        center.SHIPPINGCOST =  this.ShippingCosts[Order.shipTo] || 8;
     }
 })
+
