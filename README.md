@@ -107,7 +107,8 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 
     Create a network which performs (NumA + NumB) * NumC
 
-```        .------.      .------.      .--------.
+```
+           .------.      .------.      .--------.
    NumA ---| ADD  |------| MULT |------| Logger |
            '--+---'      '---+--'      '--------'
    NumB ------'              |
