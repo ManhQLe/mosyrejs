@@ -132,3 +132,22 @@ const Shipping = new LogicalClay({
     }
 })
 
+const OrderInferface = new LogicalClay({
+    connectPoints:["START"],
+    Steps:[
+        {
+            "Question": "Please select your product",
+            "Map":"items"
+        },
+        {
+            "Question":"",
+            "Map":""
+        }
+    ],
+    Order:{
+        Customer:{}
+    },
+    logic(center){
+
+    },
+})
