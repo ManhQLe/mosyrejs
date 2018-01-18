@@ -13,13 +13,16 @@ class Conduit extends AttribClay {
     }
 
     onConnection(withClay, atConnectPoint) {
+        //We do not want a conduit to connect to conduit with more than 1 contact
+        //We do not want a to keep more than one records of a clay connect to the same point on conduit
+        
         const {
             contacts
         } = this;
 
         const x = contacts.find(c => {
             return c.withClay === withClay
-        });
+        });    
 
         // x && (x.connectPoint === atConnectPoint || (x.withClay instanceof Conduit)) ?
         // 1 :
