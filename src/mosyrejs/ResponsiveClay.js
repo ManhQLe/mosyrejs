@@ -21,8 +21,8 @@ function* sensor(me){
             }                
         }
         else{
-            const clay = contacts.get(connectPoint)
-            clay&&Clay.vibrate(clay,connectPoint,signal,me);
+            const clays = contacts.get(connectPoint)
+            clays&&clays.forEach(clay=>Clay.vibrate(clay,connectPoint,signal,me))            
         }
     }
 }
@@ -55,17 +55,22 @@ class ResponsiveClay extends AttribClay {
     }
 
     onConnection(withClay, atConnectPoint) {        
-        const {contacts} = this;               
-        contacts.set(atConnectPoint,withClay);
+        const {contacts} = this;  
+        let clays = contacts.get(atConnectPoint);
+        clays || (clays = []);        
+        clays.indexOf(withClay)<0 && clays.push(withClay);
+        contacts.set(atConnectPoint,clays);
     }
 
     onCommunication(fromClay, atConnectPoint, signal){       
         const {contacts} = this;
         const {connectPoints} = this;
+        const others = contacts.get(atConnectPoint);
+
 
         connectPoints.find((c)=>{return this.isSameConnectionPoint(c,atConnectPoint)})
-        &&contacts.get(atConnectPoint) === fromClay
-           && (this.__.center[atConnectPoint] = signal)                    
+        && others && others.indexOf(fromClay)>=0
+        && (this.__.center[atConnectPoint] = signal)                    
     }
 
 }
