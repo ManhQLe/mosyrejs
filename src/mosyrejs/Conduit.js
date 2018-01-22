@@ -5,64 +5,17 @@ const AttribClay = require('./AttribClay')
 class Conduit extends AttribClay {
     constructor(agreement) {
         super(agreement)
-        this.contacts = [];
+        this.contacts = new Map();
 
-        this.createProp("signal", null, function () {}, function (name, store, signal) {
-            this.onCommunication(this, Symbol("DecisionfromAbove"), signal);
-        })
+       
     }
 
     onConnection(withClay, atConnectPoint) {
-        //We do not want a conduit to connect to conduit with more than 1 contact
-        //We do not want a to keep more than one records of a clay connect to the same point on conduit
         
-        const {
-            contacts
-        } = this;
-
-        const x = contacts.find(c => {
-            return c.withClay === withClay
-        });    
-
-        // x && (x.connectPoint === atConnectPoint || (x.withClay instanceof Conduit)) ?
-        // 1 :
-        // contacts.push({
-        //     withClay,
-        //     connectPoint:atConnectPoint
-        // });
-
-        !(
-            x &&
-            (
-                this.isSameConnectionPoint(x.connectPoint, atConnectPoint) ||
-                (x.withClay instanceof Conduit)
-            )
-        ) &&
-        contacts.push({
-            withClay,
-            connectPoint: atConnectPoint
-        });
-
     }
 
     onCommunication(fromClay, atConnectPoint, signal) {
-        const {
-            contacts
-        } = this.__;
-        for (const c of contacts) {
-            const {
-                withClay,
-                connectPoint
-            } = c;
-
-            withClay !== fromClay &&
-                !this.isSameConnectionPoint(connectPoint, atConnectPoint) &&
-                setTimeout(Clay.vibrate, 0, withClay, connectPoint, signal, this);
-        }
-    }
-
-    connect(withClay, atConnectionPoint) {
-        this.onConnection(withClay, atConnectionPoint);
+       
     }
 }
 
