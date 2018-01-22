@@ -5,7 +5,7 @@ const AttribClay = require('./AttribClay');
 //This function is for checking signal collection, staging and responsible for response
 function* sensor(me){                   
     const collected = new Set();
-    me.cystalize();
+    me.init();
     while(true){            
         const {connectPoint, signal} = yield;            
         const {contacts, signalStore} = me.__;
@@ -39,7 +39,7 @@ class ResponsiveClay extends AttribClay {
         this.createProp("staged", false);
         this.createProp("connectPoints",[]);
         this.createProp("response", function () {})
-        this.createProp("cystalize",function(){})
+        this.createProp("init",function(){})
         
         this.__.center = new Proxy(this,{
             get(target,connectPoint){
