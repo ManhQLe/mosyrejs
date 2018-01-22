@@ -15,7 +15,7 @@ function* sensor(me){
         {
             signalStore[connectPoint] = signal;                
             collected.add(connectPoint);
-            if(collected.size == connectPoints.length){      
+            if(collected.size === connectPoints.length){      
                 me.staged&&collected.clear();
                 setTimeout.call(me,me.response,0,me.__.center);                
             }                
