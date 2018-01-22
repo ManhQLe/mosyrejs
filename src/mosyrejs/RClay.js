@@ -5,9 +5,11 @@ const AttribClay = require('./AttribClay');
 //This function is for checking signal collection, staging and responsible for response
 function* sensor(me){                   
     const collected = new Set();
-    me.init();
+    let init = 0;
     while(true){            
         const {connectPoint, signal} = yield;            
+        ++init===1 && me.init();
+
         const {contacts, signalStore} = me.__;
         const {connectPoints} = me;  
 
@@ -17,7 +19,8 @@ function* sensor(me){
             collected.add(connectPoint);
             if(collected.size === connectPoints.length){      
                 me.staged&&collected.clear();
-                setTimeout.call(me,me.response,0,me.__.center);                
+                me.response(me.__.center);
+                //setTimeout.call(me,me.response,0,me.__.center);                
             }                
         }
         else{
