@@ -8,7 +8,7 @@ function* sensor(me){
     let init = 0;
     while(true){            
         const {connectPoint, signal} = yield;            
-        ++init===1 && me.init();
+        ++init===1 && me.onInit();
 
         const {contacts, signalStore} = me.__;
         const {connectPoints} = me;  
@@ -19,7 +19,7 @@ function* sensor(me){
             collected.add(connectPoint);
             if(collected.size === connectPoints.length){      
                 me.staged&&collected.clear();
-                me.response(me.__.center);
+                me.onResponse(connectPoint);
                 //setTimeout.call(me,me.response,0,me.__.center);                
             }                
         }
@@ -76,6 +76,13 @@ class ResponsiveClay extends AttribClay {
         && (this.__.center[atConnectPoint] = signal)                    
     }
 
+    onResponse(connectPoint){
+        this.response(this.__.center)
+    }
+
+    onInit(){
+        this.init();
+    }
 }
 
 module.exports = ResponsiveClay;

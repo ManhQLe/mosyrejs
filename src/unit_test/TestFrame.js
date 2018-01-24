@@ -5,6 +5,11 @@ const {
 const chalk = require('chalk')
 
 class TestFrame extends Clay{
+    constructor(cb){
+        super();
+        this.cb = cb;
+    }
+
     Start(){
         console.log(`-------- Testing ${this.constructor.name} --------`)
         try{
