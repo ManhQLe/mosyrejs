@@ -52,15 +52,24 @@ class Conduit extends AttribClay {
             }
         }
     }
+
+    link(array){
+        for(let x = 0;x<array.length;x+=2){
+            Clay.connect(array[x],this,array[x+1]);
+        }
+        return this;
+    }
 }
 
 
-Conduit.link = function (...args) {
+Conduit.createLink = function (...args) {
     var con = new Conduit();
-    for (let x = 0; x < args.length; x += 2) {
-        Clay.connect(args[x], con, args[x + 1])
-    }
-    return con;
+    return con.link(args);
+}
+
+Conduit.fromArray = function(array){
+    var con = new Conduit();
+    return con.link(array);
 }
 
 module.exports = Conduit;

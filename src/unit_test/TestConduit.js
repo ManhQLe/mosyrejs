@@ -23,9 +23,9 @@ class TestConduit extends TestFrame{
         })
        
 
-        const con = Conduit.link(this,"START1",C1,"A");
+        const con = Conduit.createLink(this,"START1",C1,"A");
         con.ParallelTrx = false;
-        const con2 = Conduit.link(this,"START2",C1,"B");
+        const con2 = Conduit.createLink(this,"START2",C1,"B");
         con2.ParallelTrx = false;
 
         con.onCommunication(this,"START1",2);
