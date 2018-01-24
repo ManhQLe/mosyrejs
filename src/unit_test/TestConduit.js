@@ -11,7 +11,7 @@ class TestConduit extends TestFrame{
     }
 
     Test(){
-        let Result;
+        let Result= 0;
 
         function addCore(center){
             Result = center.A + center.B;
@@ -26,9 +26,11 @@ class TestConduit extends TestFrame{
         con.ParallelTrx = false;
         const con2 = Conduit.link(this,"START2",C1,"B");
         con2.ParallelTrx = false;
-        
 
         con.onCommunication(this,"START1",2);
+
+        TestFrame.Assert(Result,0)
+
         con2.onCommunication(this,"START2",1);        
 
         TestFrame.Assert(Result,3);

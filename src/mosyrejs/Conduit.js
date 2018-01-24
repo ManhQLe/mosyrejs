@@ -10,9 +10,12 @@ class Conduit extends AttribClay {
     }
 
     onConnection(withClay, atConnectPoint) {
-        let cps =this.contacts[withClay];
-        cps || (cps = []);
-        if(cps.length >0 && (withClay instanceof Conduit))
+        let pair =this.contacts.find(({clay})=>withClay === clay);
+
+        pair || (pair={clay:null,cps:[]},this.contacts.push(pair))
+        const {clay,cps} = pair;
+        
+        if((withClay instanceof Conduit))
             return;
         
         let shouldInclude = true;
@@ -24,32 +27,28 @@ class Conduit extends AttribClay {
             }
         }
 
-        shouldInclude &&
-        (
-            cps.push(atConnectPoint),
-            this.contacts[withClay] = cps
-        )
+        shouldInclude && (pair.clay = withClay, cps.push(atConnectPoint))
     }
 
-    onCommunication(fromClay, atConnectPoint, signal) {
-        let cps = this.contacts[fromClay];        
-        if(cps && cps.find(cp=>this.isSameConnectionPoint(cp,atConnectPoint))){
+    onCommunication(fromClay, atConnectPoint, signal) {        
+        const pair = this.contacts.find(({clay})=>clay===fromClay);        
+
+        if(pair && pair.cps.find(cp=>this.isSameConnectionPoint(cp,atConnectPoint))){
             
-            for(let clay in this.contacts)
+            for(let contact of this.contacts)
             {
-                console.log(clay.toString())
-               if(this.contacts.hasOwnProperty(clay))
-               {
-                    cps = this.contacts[clay];
-                    cps.forEach((cp)=>{
-                        if(!this.isSameConnectionPoint(cp,atConnectPoint) || clay!==fromClay)
-                        {                        
-                            this.ParallelTrx?
-                            setTimeout(clay,clay.onCommunication,0,this,cp,signal)
-                            :clay.onCommunication(this,cp,signal);
-                        }
-                    })
-                }
+                const {cps,clay} = contact;
+
+                cps.forEach((cp)=>{
+                    if(!this.isSameConnectionPoint(cp,atConnectPoint) || clay!==fromClay)
+                    {                        
+                        this.ParallelTrx?
+                        setTimeout(clay,clay.onCommunication,0,this,cp,signal)
+                        :clay.onCommunication(this,cp,signal);
+
+                    }
+                })
+                
             }
         }
     }
