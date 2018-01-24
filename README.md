@@ -86,11 +86,11 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 
 
 ```
-    Clay ◄──┬── AttribClay ◄────┬──── ResponsiveClay ◄──── LogicalClay
-            |                   |
-            |                   ├──── Conduit
-            |                   |
-            └── UniClay         └──── SynthClay
+    Clay ◄──── AttribClay ◄────┬──── RClay
+                               |
+                               ├──── Conduit
+                               |
+                               └──── CpxClay
              
 ```
 
@@ -116,24 +116,24 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 ```
 
 ``` javascript
-    const ResponsiveClay = require('mosyre/ResponsiveClay')
+    const RClay = require('mosyre/RClay')
     const Conduit = require('mosyre/Conduit')
 
-    const Add = new ResponsiveClay({
+    const Add = new RClay({
         connectPoints:["A","B"],
         response(center){
             center.SUM = center.A + center.B
         }
     })
 
-    const Mult = new ResponsiveClay({
+    const Mult = new RClay({
         connectPoints:["A","B"],
         response(center){
             center.PRODUCT = center.A * center.B
         }
     })
 
-    const Log = new ResponsiveClay({
+    const Log = new RClay({
         connectPoints:["INFO"],
         response(center){
             console.log(center.INFO)
@@ -187,20 +187,21 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
         ▣ createProp(Object, propName, defVal, getFx, setFx, storage): void
 ```
 
-### ResponsiveClay
+### RClay
 
 ```javascript
-    ResponsiveClay(agreement): constructor
+    RClay(agreement): constructor
 
     //These folowing properties can be intializabled by agreement
     ■[G/S] staged(false)
     ■[G/S] connectPoints([]) 
     ■[G/S] response(function(){})
     ■[G/S] cystalize(function(){})
-
+    ◆ onResponse(atLastPoint): void
+    ◆ onInit(): void
     //Example of instantiation
 
-    const Clay1 = new ResponsiveClay({
+    const Clay1 = new RClay({
         connectPoints:["X","Y"],
         response(center){
             //Send sum of signals to Z connect point.
@@ -210,7 +211,7 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 
     //Example of inheritance
 
-    class ClayDoSqrt extends ResponsiveClay{
+    class ClayDoSqrt extends RClay{
         constructor(agg){
             super(agg);
 
@@ -226,29 +227,7 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 
 ```
 
-### LogicalClay
-
-``` javascript
-    LogicalClay(agreement):constructor
-
-    ◆ logicAtCenter(agreement): Boolean    
-
-    //LogicalClay is a quick way for creating template
-    
-    class CircleArea extends LogicalClay{
-        constructor(agr){
-            super(agr);
-            this.connectPoints=["R"];
-        }        
-        logicAtCenter(agr){
-            this.AREA =  Math.sqrt(this.R * this.R * 
-        }
-    }
-
-
-```
-
-### SynthClay
+### CpxClay
 
 ``` javascript
 
@@ -263,8 +242,7 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 ``` javascript
 
     Conduit():constructor
-
-    ■[S] signal //Set only
-    ▣ link(clay1,connectPoint1,connectPoint2,clay2): void
-    ▣ multiLink(clay1,connectPoint1,clay2,connectPoint2,....): void
+    ◆ link(Array): void    
+    ▣ fromArray(Array): void
+    ▣ createLink(clay1,connectPoint1,clay2,connectPoint2,....): void
 ```
