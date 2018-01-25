@@ -43,9 +43,8 @@ class Conduit extends AttribClay {
                     if(!this.isSameConnectionPoint(cp,atConnectPoint) || clay!==fromClay)
                     {                        
                         this.ParallelTrx?
-                        setTimeout(clay,clay.onCommunication,0,this,cp,signal)
-                        :clay.onCommunication(this,cp,signal);
-
+                        setTimeout(Clay.vibrate,0,clay,cp,signal,this)                        
+                        :clay.onCommunication(this,cp,signal);                        
                     }
                 })
                 

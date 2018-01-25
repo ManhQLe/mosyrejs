@@ -19,8 +19,9 @@ function* sensor(me){
             collected.add(connectPoint);
             if(collected.size === connectPoints.length){      
                 me.staged&&collected.clear();
-                me.onResponse(connectPoint);
-                //setTimeout.call(me,me.response,0,me.__.center);                
+                me.onResponse(connectPoint); //<---Calling this without setTimeOut will cause 
+                //function generator already started.
+                //setTimeout.call(me,me.response,0,me.__.center);               
             }                
         }
         else{
@@ -30,13 +31,38 @@ function* sensor(me){
     }
 }
 
-class ResponsiveClay extends AttribClay {
+function __Process(me,connectPoint,signal){    
+    ++me.__.init===1 && me.onInit();
+
+    const {contacts, signalStore,collected} = me.__;
+    const {connectPoints} = me;  
+
+    if(connectPoints.indexOf(connectPoint)>=0)
+    {
+        signalStore[connectPoint] = signal;                
+        collected.add(connectPoint);
+        if(collected.size === connectPoints.length){      
+            me.staged&&collected.clear();
+            me.onResponse(connectPoint);
+            //setTimeout.call(me,me.response,0,me.__.center);                
+        }                
+    }
+    else{
+        const clays = contacts.get(connectPoint)
+        clays&&clays.forEach(clay=>Clay.vibrate(clay,connectPoint,signal,me))            
+    }
+}
+
+class RClay extends AttribClay {
     constructor(agreement) {
         super(agreement);   
         this.contacts = new Map();
 
         this.__.signalStore = {};
         this.__.sensor = sensor(this);
+
+        this.__.init = 0;
+        this.__.collected = new Set();
 
         /*-------------------Agreement definition--------------------*/
         this.createProp("staged", false);
@@ -49,7 +75,8 @@ class ResponsiveClay extends AttribClay {
                 return target.__.signalStore[connectPoint];
             },
             set(target,connectPoint,signal){
-                target.__.sensor.next({connectPoint,signal});
+                //target.__.sensor.next({connectPoint,signal});
+                __Process(target,connectPoint,signal);
                 return true;
             }
         });
@@ -65,11 +92,11 @@ class ResponsiveClay extends AttribClay {
         contacts.set(atConnectPoint,clays);
     }
 
-    onCommunication(fromClay, atConnectPoint, signal){       
+    onCommunication(fromClay, atConnectPoint, signal){  
+          
         const {contacts} = this;
         const {connectPoints} = this;
         const others = contacts.get(atConnectPoint);
-
 
         connectPoints.find((c)=>{return this.isSameConnectionPoint(c,atConnectPoint)})
         && others && others.indexOf(fromClay)>=0
@@ -83,6 +110,10 @@ class ResponsiveClay extends AttribClay {
     onInit(){
         this.init();
     }
+
+    getCenter(){
+        return this.__.center;
+    }
 }
 
-module.exports = ResponsiveClay;
+module.exports = RClay;
