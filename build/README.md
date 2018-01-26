@@ -66,8 +66,21 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 
 > npm install mosyrejs --save
 
-# Usage
+# Development
+Clone
 
+> git clone https://github.com/ManhQLe/mosyrejs [Your Folder]
+
+Build
+
+```Shell
+   # For Windows
+   npm run build
+   
+   # For Linux
+   chmod +x buildLinux.sh
+   npm run build-linux
+```        
 
 ## Class Diagram
 
