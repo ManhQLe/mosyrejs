@@ -17,7 +17,7 @@ class VerifierClay extends RClay
         this.createProp("verifyLogic",()=>{});
         const cps = this.contactPoints;
         if(cps.indexOf(VerifierClay.OutPoint)>=0)          
-            throw new Error(`${VerifierClay.OutPoint} is reserved`)
+            throw new Error(`${VerifierClay.OutPoint} is reserved`)        
     }    
 
     getCurrentTestCase(){
@@ -35,8 +35,8 @@ class VerifierClay extends RClay
             console.log(chalk.red(ex));
             console.log(chalk.yellow('------- Call Stack -------'))
             console.log(chalk.yellow(ex.stack));
-            console.log(`------- End of ${this.constructor.name} -------`);
-            process.exit();
+            console.log(`------- End of ${this.constructor.name} -------`);      
+            this.finalizeTest();
         }   
             
     }    
@@ -49,8 +49,13 @@ class VerifierClay extends RClay
         {            
             console.log(chalk.green("Test Passed"));
             console.log(`------- End of ${this.constructor.name} -------`);
-            this.getCenter()[VerifierClay.OutPoint] = 1;
+            this.finalizeTest();
         }
+    }
+
+    finalizeTest(){
+        this.caseIndex = 0;
+        this.getCenter()[VerifierClay.OutPoint] = 1;  
     }
 
     start(){

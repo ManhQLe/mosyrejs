@@ -57,13 +57,16 @@ Execution of the entire network of clays cannot be thought nor programmed in ter
 
 Predictablity of the outcomes can only be obtained when network is designed appropriately. This is because clays are not responsile for coordination and do not have the capabilities to control the entire flow of the network. We certainly can design specific clays to act as facilitators for synchronicity in specific regions of network so that the outcomes are expected. Larger network will requires more facilitators.
 
-## Unification attribute of MoSyRe framework
-
-Since the architecture is flexible and dynamic, one can think of many ways to implement clays and frameworked them such that the framework can become a common pattern for programming. Clays implemented in different frameworks can join in connections and work with each other. This is where **Unification** attribute expressed due to observation that the main quality of clay is to connect. 
 
 # Introduction to MoSyRe JS framework
 
 MosyRe.js is a javascript library implements MoSyRe architecture.
+
+# Installation
+
+> npm install mosyrejs --save
+
+# Usage
 
 
 ## Class Diagram
@@ -83,15 +86,83 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 
 
 ```
-    Clay ◄──┬── AttribClay ◄────┬──── ResponsiveClay ◄──── LogicalClay
-            |                   |
-            |                   ├──── Conduit
-            |                   |
-            └── UniClay         └──── SynthClay
+    Clay ◄──── AttribClay ◄────┬──── RClay
+                               |
+                               ├──── Conduit
+                               |
+                               └──── CpxClay
              
 ```
 
 ## Programming Interface
+
+### Quick Start
+
+    The end goal is to create clays, and connect them together
+    1. Create clay and define their behavior
+    2. Connect them together to perform complex tasks
+
+
+#### Example1
+
+    Create a network which performs (NumA + NumB) * NumC
+
+```
+           .------.      .------.      .--------.
+   NumA ---| ADD  |------| MULT |------| Logger |
+           '--+---'      '---+--'      '--------'
+   NumB ------'              |
+                    NumC ----'
+```
+
+``` javascript
+    const RClay = require('mosyre/RClay')
+    const Conduit = require('mosyre/Conduit')
+
+    const Add = new RClay({
+        connectPoints:["A","B"],
+        response(center){
+            center.SUM = center.A + center.B
+        }
+    })
+
+    const Mult = new RClay({
+        connectPoints:["A","B"],
+        response(center){
+            center.PRODUCT = center.A * center.B
+        }
+    })
+
+    const Log = new RClay({
+        connectPoints:["INFO"],
+        response(center){
+            console.log(center.INFO)
+        }
+    })
+
+    //Connect
+
+    Conduit.link(Log,"INFO","PRODUCT",Mult);
+
+    const linkA = Conduit.link(Add,"A");
+    const linkB = Conduit.link(Add,"B");
+    Conduit.link(Add,"SUM","A",Mult);
+    const linkC = Conduit.link(Mult,"B");
+    
+    //Send information
+    linkA.signal = 2.3
+    linkB.signal = 4.3
+    linkC.signal = 5
+    
+```
+
+#### Example2
+    Still thinking on an interesting one :)
+``` javascript
+
+```
+
+
 ### Clay
 ```javascript
     Clay(agreement): constructor
@@ -116,43 +187,54 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
         ▣ createProp(Object, propName, defVal, getFx, setFx, storage): void
 ```
 
-### ResponsiveClay
+### RClay
 
 ```javascript
-    ResponsiveClay(agreement): constructor
+    RClay(agreement): constructor
 
-    These folowing properties are intializable by agreement
+    //These folowing properties can be intializabled by agreement
     ■[G/S] staged(false)
     ■[G/S] connectPoints([]) 
     ■[G/S] response(function(){})
     ■[G/S] cystalize(function(){})
-
+    ◆ onResponse(atLastPoint): void
+    ◆ getCenter(): center
+    ◆ onInit(): void
     //Example of instantiation
 
-    const Clay1 = new ResponsiveClay({
-        response()
+    const Clay1 = new RClay({
+        connectPoints:["X","Y"],
+        response(center){
+            //Send sum of signals to Z connect point.
+            center.Z = center.X + center.Y
+        }
     })
 
+    //Example of inheritance
+
+    class ClayDoSqrt extends RClay{
+        constructor(agg){
+            super(agg);
+
+            this.response = (center)=>{
+                //Send sqrt of signal to SQRT connect point
+                center.SQRT = Math.sqrt(center.X)
+            }
+        }
+    }
+
+    const Clay2 = new ClayDoSqrt();
+
+
 ```
 
-### LogicalClay
-
-``` javascript
-    LogicalClay(agreement):constructor
-
-    ◆ logicAtCenter(agreement): Boolean    
-
-```
-
-### SynthClay
+### CpxClay
 
 ``` javascript
 
     SynthClay(agreement): constructor
 
     ◆ build(): Object
-
-
 
 ```
 
@@ -161,8 +243,7 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
 ``` javascript
 
     Conduit():constructor
-
-    ■[S] signal //Set only
-    ▣ link(clay1,connectPoint1,connectPoint2,clay2): void
-    ▣ multiLink(clay1,connectPoint1,clay2,connectPoint2,....): void
+    ◆ link(Array): void    
+    ▣ fromArray(Array): void
+    ▣ createLink(clay1,connectPoint1,clay2,connectPoint2,....): void
 ```

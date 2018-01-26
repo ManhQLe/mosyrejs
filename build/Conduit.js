@@ -6,76 +6,69 @@ class Conduit extends AttribClay {
     constructor(agreement) {
         super(agreement)
         this.contacts = [];
-
-        this.createProp("signal", null, function () {}, function (name, store, signal) {
-            this.onCommunication(this, Symbol("DecisionfromAbove"), signal);
-        })
+        this.createProp("ParallelTrx",true);
     }
 
     onConnection(withClay, atConnectPoint) {
-        const {
-            contacts
-        } = this;
+        let pair =this.contacts.find(({clay})=>withClay === clay);
 
-        const x = contacts.find(c => {
-            return c.withClay === withClay
-        });
+        pair || (pair={clay:null,cps:[]},this.contacts.push(pair))
+        const {clay,cps} = pair;
+        
+        if((withClay instanceof Conduit))
+            return;
+        
+        let shouldInclude = true;
+        for(let cp of cps){
+            if(this.isSameConnectionPoint(cp,atConnectPoint))
+            {
+                shouldInclude = false;
+                break;
+            }
+        }
 
-        // x && (x.connectPoint === atConnectPoint || (x.withClay instanceof Conduit)) ?
-        // 1 :
-        // contacts.push({
-        //     withClay,
-        //     connectPoint:atConnectPoint
-        // });
-
-        !(
-            x &&
-            (
-                this.isSameConnectionPoint(x.connectPoint, atConnectPoint) ||
-                (x.withClay instanceof Conduit)
-            )
-        ) &&
-        contacts.push({
-            withClay,
-            connectPoint: atConnectPoint
-        });
-
+        shouldInclude && (pair.clay = withClay, cps.push(atConnectPoint))
     }
 
-    onCommunication(fromClay, atConnectPoint, signal) {
-        const {
-            contacts
-        } = this.__;
-        for (const c of contacts) {
-            const {
-                withClay,
-                connectPoint
-            } = c;
+    onCommunication(fromClay, atConnectPoint, signal) {        
+        const pair = this.contacts.find(({clay})=>clay===fromClay);        
 
-            withClay !== fromClay &&
-                !this.isSameConnectionPoint(connectPoint, atConnectPoint) &&
-                setTimeout(Clay.vibrate, 0, withClay, connectPoint, signal, this);
+        if(pair && pair.cps.find(cp=>this.isSameConnectionPoint(cp,atConnectPoint))){
+            
+            for(let contact of this.contacts)
+            {
+                const {cps,clay} = contact;
+
+                cps.forEach((cp)=>{
+                    if(!this.isSameConnectionPoint(cp,atConnectPoint) || clay!==fromClay)
+                    {                        
+                        this.ParallelTrx?
+                        setTimeout(Clay.vibrate,0,clay,cp,signal,this)                        
+                        :clay.onCommunication(this,cp,signal);                        
+                    }
+                })
+                
+            }
         }
     }
 
-    connect(withClay, atConnectionPoint) {
-        this.onConnection(withClay, atConnectionPoint);
+    link(array){
+        for(let x = 0;x<array.length;x+=2){
+            Clay.connect(array[x],this,array[x+1]);
+        }
+        return this;
     }
 }
 
-Conduit.link = function (clay1, p1, p2, clay2) {
+
+Conduit.createLink = function (...args) {
     var con = new Conduit();
-    Clay.connect(clay1, con, p1);
-    (p2 && clay2) ? Clay.connect(clay2, con, p2): 1;
-    return con;
+    return con.link(args);
 }
 
-Conduit.multiLink = function (...args) {
+Conduit.fromArray = function(array){
     var con = new Conduit();
-    for (let x = 0; x < args.length; x += 2) {
-        Clay.connect(args[x], con, args[x + 1])
-    }
-    return con;
+    return con.link(array);
 }
 
 module.exports = Conduit;
