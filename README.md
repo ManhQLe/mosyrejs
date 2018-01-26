@@ -198,6 +198,7 @@ MosyRe.js is a javascript library implements MoSyRe architecture.
     ■[G/S] response(function(){})
     ■[G/S] cystalize(function(){})
     ◆ onResponse(atLastPoint): void
+    ◆ getCenter(): center
     ◆ onInit(): void
     //Example of instantiation
 
