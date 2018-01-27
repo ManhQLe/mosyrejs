@@ -16,7 +16,6 @@ class TestRClay extends TestFrame{
         let Result = 0;
 
         function addCore(center){
-
            Result = center.A + center.B
         }
 

@@ -8,7 +8,7 @@ function* sensor(me){
     let init = 0;
     while(true){            
         const {connectPoint, signal} = yield;            
-        ++init===1 && me.onInit();
+        ++init===1 && me.onInit(me);
 
         const {contacts, signalStore} = me.__;
         const {connectPoints} = me;  
@@ -104,7 +104,7 @@ class RClay extends AttribClay {
     }
 
     onResponse(connectPoint){
-        this.response(this.__.center)
+        this.response(this.__.center,this)
     }
 
     onInit(){
