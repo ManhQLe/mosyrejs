@@ -59,7 +59,7 @@ class RClay extends AttribClay {
         this.contacts = new Map();
 
         this.__.signalStore = {};
-        this.__.sensor = sensor(this);
+        //this.__.sensor = sensor(this);
 
         this.__.init = 0;
         this.__.collected = new Set();
