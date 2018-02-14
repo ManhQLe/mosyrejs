@@ -2,6 +2,7 @@
 
 class Clay {
 
+    //<-- Communicated through my point"
     onCommunication(fromClay, atConnectPoint, signal) {}
 
     onConnection(withClay, atConnectPoint) {}
