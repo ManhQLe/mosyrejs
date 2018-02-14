@@ -15,16 +15,17 @@ class VerifierClay extends RClay
         this.createProp("testSet",[]);
         this.createProp("actLogic",()=>{});
         this.createProp("verifyLogic",()=>{});
-        const cps = this.contactPoints;
+        this.createProp("name","UNNAME")
+        const cps = this.connectPoints;
         if(cps.indexOf(VerifierClay.OutPoint)>=0)          
             throw new Error(`${VerifierClay.OutPoint} is reserved`)        
     }    
 
     getCurrentTestCase(){
-        return this.caseIndex < this.TESTSET.length ? this.testSet[this.caseIndex]: null
+        return this.caseIndex < this.testSet.length ? this.testSet[this.caseIndex]: null
     }
 
-    onResponse(cp){        
+    onResponse(cp){     
         const isEnded = false;
         try{ 
             this.verifyLogic(this.getCurrentTestCase(),this.getCenter());
@@ -35,7 +36,7 @@ class VerifierClay extends RClay
             console.log(chalk.red(ex));
             console.log(chalk.yellow('------- Call Stack -------'))
             console.log(chalk.yellow(ex.stack));
-            console.log(`------- End of ${this.constructor.name} -------`);      
+            console.log(`------- End of ${this.name} -------`);      
             this.finalizeTest();
         }   
             
@@ -48,7 +49,7 @@ class VerifierClay extends RClay
         else
         {            
             console.log(chalk.green("Test Passed"));
-            console.log(`------- End of ${this.constructor.name} -------`);
+            console.log(`------- End of ${this.name} -------`);
             this.finalizeTest();
         }
     }
@@ -59,8 +60,8 @@ class VerifierClay extends RClay
     }
 
     start(){
-        console.log(`------- Start of ${this.constructor.name} -------`);
-        test();       
+        console.log(`------- Start of ${this.name} -------`);
+        this.test();       
     }
 
     static Assert(actual,expect){
@@ -68,5 +69,7 @@ class VerifierClay extends RClay
         throw new Error(`Actual: ${actual} is not the same as expected: ${expect}`)
     }
 
-    static OutPoint = "__M3G1CPO47";
 }
+
+VerifierClay.OutPoint = "__M3G1CPO47"
+module.exports = VerifierClay
