@@ -11,9 +11,10 @@ class SClay extends AttribClay{
         this.contacts = [];
         this.contactPoints = [];
 
+        const map = this.__.map;
 
         map.forEach(e=>{
-            const [myPoint,InternalClay,internalPoint] = e; 
+            const [myPoint,InternalClay,internalPoint] = e;   
             this.contactPoints.push(myPoint)           
             Clay.connect(this,InternalClay,myPoint,internalPoint);
             
@@ -22,11 +23,13 @@ class SClay extends AttribClay{
     }
 
     onCommunication(fromClay,atConnectionPoint,signal){
+        console.log(atConnectionPoint)
         const map = this.__.map;
         const {contacts} = this;
         //Check to see if he is from map
         const r =  map.find(m=>m[1] === fromClay)
         if(r){
+            console.log("X")
             const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectionPoint))
             const {clays} = pair
             clays.forEach(c=>{                
@@ -34,11 +37,15 @@ class SClay extends AttribClay{
             })
         }
         else{
+            console.log("Y")
             //Not from map
             const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectionPoint))
-            pair && map.forEach(([mp,clay,hp])=>{
+            
+            pair && map.forEach(([mp,clay,hp])=>{                
                 if(this.isSameConnectionPoint(mp,atConnectionPoint))
+                {                                        
                     Clay.vibrate(clay,hp,signal,this);
+                }
             })
         }
 
@@ -54,7 +61,7 @@ class SClay extends AttribClay{
     }
 
     onBuild(){
-        return this.build();
+        return this.build(this);
     }
 }
 
@@ -65,3 +72,4 @@ class SClay extends AttribClay{
     [Me,S2 --------Clay,Port]
 */
 
+module.exports = SClay;
