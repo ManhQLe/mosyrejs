@@ -28,6 +28,7 @@ class Adder extends RClay{
     }
 
     onResponse(){
+        console.log("X")
         const center = this.getCenter();
         console.log("ADD")
         center.C = center.A + center.B
@@ -72,4 +73,6 @@ Conduit.createLink(SClaySubject,"B",Verifier,"B");
 Conduit.createLink(SClaySubject,"R",Verifier,"RESULT");
 Conduit.createLink(Block,"EXIT",Verifier,VerifierClay.OutPoint)
 
-Verifier.start();
+console.log(Add1.contacts)
+
+//Verifier.start();

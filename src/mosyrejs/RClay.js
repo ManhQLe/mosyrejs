@@ -85,7 +85,7 @@ class RClay extends AttribClay {
     }
 
     onConnection(withClay, atConnectPoint) {        
-        const {contacts} = this;
+        const {contacts} = this;        
         let pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectPoint))
         pair || (pair = {clays:[],cp:atConnectPoint},contacts.push(pair) )
         const {clays,cp} = pair;
@@ -96,8 +96,8 @@ class RClay extends AttribClay {
                 
         const {contacts} = this;
         const {connectPoints} = this;
-        const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectPoint))
-
+        const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectPoint))       
+       
         connectPoints.find((c)=>{return this.isSameConnectionPoint(c,atConnectPoint)})
         && pair && pair.clays.indexOf(fromClay)>=0
         && (this.__.center[atConnectPoint] = signal)                    
