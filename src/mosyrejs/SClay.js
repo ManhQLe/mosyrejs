@@ -23,15 +23,17 @@ class SClay extends AttribClay{
     }
 
     onCommunication(fromClay,atConnectionPoint,signal){
+
         const map = this.__.map;
         const {contacts} = this;
         //Check to see if he is from map
         const r =  map.find(m=>m[1] === fromClay)
-        if(r){
-            const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectionPoint))
+        if(r){            
+            
+            const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, r[0]))
             const {clays} = pair
             clays.forEach(c=>{                
-                c!==fromClay && Clay.vibrate(c,atConnectionPoint,signal,this);                
+                c!==fromClay && Clay.vibrate(c,r[0],signal,this);                
             })
         }
         else{

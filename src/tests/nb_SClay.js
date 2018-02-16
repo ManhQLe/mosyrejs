@@ -14,7 +14,8 @@ const Verifier = new VerifierClay({
         [2,3,24],
         [1,3,12],
         [5,1,20],
-        [3,6,72]
+        [3,6,72],
+        [2,2,16]
     ],
     connectPoints:["RESULT"]
 })
@@ -28,9 +29,7 @@ class Adder extends RClay{
     }
 
     onResponse(){
-        console.log("X")
         const center = this.getCenter();
-        console.log("ADD")
         center.C = center.A + center.B
     }
 }
@@ -73,6 +72,6 @@ Conduit.createLink(SClaySubject,"B",Verifier,"B");
 Conduit.createLink(SClaySubject,"R",Verifier,"RESULT");
 Conduit.createLink(Block,"EXIT",Verifier,VerifierClay.OutPoint)
 
-console.log(Add1.contacts)
 
-//Verifier.start();
+
+Verifier.start();
