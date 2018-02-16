@@ -103,7 +103,7 @@ Build
                                |
                                ├──── Conduit
                                |
-                               └──── CpxClay
+                               └──── SClay
              
 ```
 
@@ -211,7 +211,7 @@ Build
     ■[G/S] response(function(){})
     ■[G/S] cystalize(function(){})
     ◆ onResponse(atLastPoint): void
-    ◆ getCenter(): center
+    ◆ getCenter(): Object //center
     ◆ onInit(): void
     //Example of instantiation
 
@@ -241,13 +241,61 @@ Build
 
 ```
 
-### CpxClay
+### SClay
 
 ``` javascript
 
-    SynthClay(agreement): constructor
+    SuperClay(agreement): constructor
 
-    ◆ build(): Object
+    ◆ onBuild(): Array // [[pI1, clay1, clayp1],[pI2, clay2, clayp2],[pI3, clay3, clayp3]...]
+
+
+    //Example of instantiation
+    const Add1 = new Adder()
+    const Add2 = new Adder()
+    const Mul = new Mult()
+
+    Conduit.createLink(Add1,"C",Mul,"A");
+    Conduit.createLink(Add2,"C",Mul,"B");
+
+    const SClaySubject = new SClay({
+        layoutMap:[
+            ["A",Add1,"A"],
+            ["A",Add1,"B"],
+            ["B",Add2,"A"],
+            ["B",Add2,"B"],
+            ["R",Mul,"C"]
+        ]    
+    })
+
+    const SClay2 = new SClay({
+        build:(clay)=>{
+            return [
+                ["A",Add1,"A"],
+                ["A",Add1,"B"],
+                ["B",Add2,"A"],
+                ["B",Add2,"B"],
+                ["R",Mul,"C"]
+            ]
+        }    
+    })
+
+    //Example of Inheritance
+
+    class ISClay extends SClay {
+        constructor(agr){
+            super(agr)
+        }
+        onBuild(){
+            return [
+                ["A",Add1,"A"],
+                ["A",Add1,"B"],
+                ["B",Add2,"A"],
+                ["B",Add2,"B"],
+                ["R",Mul,"C"]
+            ]       
+        }
+    }
 
 ```
 

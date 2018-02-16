@@ -8,7 +8,7 @@ function* sensor(me){
     let init = 0;
     while(true){            
         const {connectPoint, signal} = yield;            
-        ++init===1 && me.onInit();
+        ++init===1 && me.onInit(me);
 
         const {contacts, signalStore} = me.__;
         const {connectPoints} = me;  
@@ -48,18 +48,18 @@ function __Process(me,connectPoint,signal){
         }                
     }
     else{
-        const clays = contacts.get(connectPoint)
-        clays&&clays.forEach(clay=>Clay.vibrate(clay,connectPoint,signal,me))            
+        let pair = contacts.find(p=>me.isSameConnectionPoint(p.cp, connectPoint))
+        pair&&pair.clays.forEach(clay=>Clay.vibrate(clay,connectPoint,signal,me))
     }
 }
 
 class RClay extends AttribClay {
     constructor(agreement) {
         super(agreement);   
-        this.contacts = new Map();
+        this.contacts = []
 
         this.__.signalStore = {};
-        this.__.sensor = sensor(this);
+        //this.__.sensor = sensor(this);
 
         this.__.init = 0;
         this.__.collected = new Set();
@@ -81,30 +81,30 @@ class RClay extends AttribClay {
             }
         });
 
-        this.__.sensor.next();
+        //this.__.sensor.next();
     }
 
     onConnection(withClay, atConnectPoint) {        
-        const {contacts} = this;  
-        let clays = contacts.get(atConnectPoint);
-        clays || (clays = []);        
-        clays.indexOf(withClay)<0 && clays.push(withClay);
-        contacts.set(atConnectPoint,clays);
+        const {contacts} = this;        
+        let pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectPoint))
+        pair || (pair = {clays:[],cp:atConnectPoint},contacts.push(pair) )
+        const {clays,cp} = pair;
+        clays.indexOf(withClay)>=0 || clays.push(withClay)
     }
 
     onCommunication(fromClay, atConnectPoint, signal){  
-          
+                
         const {contacts} = this;
         const {connectPoints} = this;
-        const others = contacts.get(atConnectPoint);
-
+        const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectPoint))       
+       
         connectPoints.find((c)=>{return this.isSameConnectionPoint(c,atConnectPoint)})
-        && others && others.indexOf(fromClay)>=0
+        && pair && pair.clays.indexOf(fromClay)>=0
         && (this.__.center[atConnectPoint] = signal)                    
     }
 
     onResponse(connectPoint){
-        this.response(this.__.center)
+        this.response(this.__.center,this)
     }
 
     onInit(){
