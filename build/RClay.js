@@ -37,7 +37,7 @@ function __Process(me,connectPoint,signal){
     const {contacts, signalStore,collected} = me.__;
     const {connectPoints} = me;  
 
-    if(connectPoints.indexOf(connectPoint)>=0)
+    if(connectPoints.findIndex(cp=>me.isSameConnectionPoint(cp,connectPoint))>=0)
     {
         signalStore[connectPoint] = signal;                
         collected.add(connectPoint);
@@ -89,7 +89,7 @@ class RClay extends AttribClay {
         let pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectPoint))
         pair || (pair = {clays:[],cp:atConnectPoint},contacts.push(pair) )
         const {clays,cp} = pair;
-        clays.indexOf(withClay)>=0 || clays.push(withClay)
+        clays.findIndex(c=>c===withClay)>=0 || clays.push(withClay)
     }
 
     onCommunication(fromClay, atConnectPoint, signal){  
@@ -99,7 +99,7 @@ class RClay extends AttribClay {
         const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectPoint))       
        
         connectPoints.find((c)=>{return this.isSameConnectionPoint(c,atConnectPoint)})
-        && pair && pair.clays.indexOf(fromClay)>=0
+        && pair && pair.clays.findIndex(c=>c===fromClay)>=0
         && (this.__.center[atConnectPoint] = signal)                    
     }
 
