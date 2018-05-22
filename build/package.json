@@ -1,12 +1,14 @@
 {
   "name": "mosyrejs",
-  "version": "1.1.5",
-  "description": "Wonderful way to synchronicity",
+  "version": "1.1.6",
+  "description": "Multi-order synchronization",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "test.cmd",
+    "testLinux":"./testLinux.sh",
     "build": "build.cmd",
     "build-linux":"./buildLinux.sh"
+
   },
   "repository": {
     "type": "git",
