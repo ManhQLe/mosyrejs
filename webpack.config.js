@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/mosyrejs/index.js',
+    entry: './src/mosyrejs/browser.js',
     output: {
         path: path.join(__dirname, 'build'),
         filename: 'mosyrejs.min.js'

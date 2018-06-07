@@ -66,6 +66,10 @@ Conduit.createLink = function (...args) {
     return con.link(args);
 }
 
+Conduit.link = function(A,pA,pB,B){
+    return Conduit.fromArray([A,pA,B,pB])
+}
+
 Conduit.fromArray = function(array){
     var con = new Conduit();
     return con.link(array);
