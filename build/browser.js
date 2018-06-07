@@ -5,7 +5,7 @@ const Conduit = require('./Conduit');
 const RClay = require('./RClay');
 const AttribClay = require('./AttribClay')
 const SClay = require('./SClay')
-mosyrejs = {
+window.mosyrejs = {
     Clay,
     Conduit,
     RClay,    
