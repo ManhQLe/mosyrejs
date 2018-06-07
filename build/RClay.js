@@ -32,7 +32,7 @@ function* sensor(me){
 }
 
 function __Process(me,connectPoint,signal){    
-    ++me.__.init===1 && me.onInit();
+    //++me.__.init===1 && me.onInit();
 
     const {contacts, signalStore,collected} = me.__;
     const {connectPoints} = me;  
@@ -61,7 +61,7 @@ class RClay extends AttribClay {
         this.__.signalStore = {};
         //this.__.sensor = sensor(this);
 
-        this.__.init = 0;
+        //this.__.init = 0;
         this.__.collected = new Set();
 
         /*-------------------Agreement definition--------------------*/
@@ -80,7 +80,7 @@ class RClay extends AttribClay {
                 return true;
             }
         });
-
+        this.onInit();
         //this.__.sensor.next();
     }
 
