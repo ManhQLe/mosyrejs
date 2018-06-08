@@ -108,7 +108,7 @@ class RClay extends AttribClay {
     }
 
     onInit(){
-        this.init();
+        this.init(this);
     }
 
     getCenter(){
