@@ -24,6 +24,9 @@ class AttribClay extends Clay {
         AttribClay.createProp(this, name, defVal, get, set, store);
     }
 
+    getAgreement(){
+        return this.__.agreement;
+    }
     
     isSameConnectionPoint(a,b){
         return a===b;
