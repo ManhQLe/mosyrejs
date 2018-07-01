@@ -24,26 +24,26 @@ const Verifier = new VerifierClay({
 class Adder extends RClay{
     constructor(agr){
         super(agr);
-        this.connectPoints=["A","B"],
+        this.connectPoints=["X","Y"],
         this.staged = true;
     }
 
-    onResponse(){
+    onResponse(){        
         const center = this.getCenter();
-        center.C = center.A + center.B
+        center.C = center.X + center.Y
     }
 }
 
 class Mult extends RClay{
     constructor(agr){
         super(agr);
-        this.connectPoints=["A","B"]
+        this.connectPoints=["X","Y"]
         this.staged = true;
     }
 
     onResponse(){
         const center = this.getCenter();
-        center.C = center.A * center.B
+        center.C = center.X * center.Y
     }
 }
 
@@ -51,16 +51,16 @@ const Add1 = new Adder()
 const Add2 = new Adder()
 const Mul = new Mult()
 
-Conduit.createLink(Add1,"C",Mul,"A");
-Conduit.createLink(Add2,"C",Mul,"B");
+Conduit.createLink(Add1,"C",Mul,"X");
+Conduit.createLink(Add2,"C",Mul,"Y");
 
 
 const SClaySubject = new SClay({
     layoutMap:[
-        ["A",Add1,"A"],
-        ["A",Add1,"B"],
-        ["B",Add2,"A"],
-        ["B",Add2,"B"],
+        ["A",Add1,"X"],
+        ["A",Add1,"Y"],
+        ["B",Add2,"X"],
+        ["B",Add2,"Y"],
         ["R",Mul,"C"]
     ]    
 })
