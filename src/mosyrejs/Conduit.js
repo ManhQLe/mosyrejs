@@ -10,6 +10,9 @@ class Conduit extends AttribClay {
     }
 
     onConnection(withClay, atConnectPoint) {
+        if(withClay === this)
+            return;
+
         let pair =this.contacts.find(({clay})=>withClay === clay);
 
         pair || (pair={clay:null,cps:[]},this.contacts.push(pair))
