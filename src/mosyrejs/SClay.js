@@ -1,5 +1,6 @@
 'use strict'
 const Clay = require('./Clay');
+const Conduit = require('./Conduit');
 const AttribClay = require('./AttribClay');
 
 class SClay extends AttribClay{
@@ -8,55 +9,37 @@ class SClay extends AttribClay{
         this.createProp("layoutMap",[])
         this.createProp("build",(clay)=>{return clay.agreement.layoutMap})
         this.__.map = this.onBuild();
-        this.contacts = [];
-        this.contactPoints = [];
-
+        this.links = [];        
         const map = this.__.map;
 
         map.forEach(e=>{
-            const [myPoint,InternalClay,internalPoint] = e;   
-            this.contactPoints.push(myPoint)           
-            Clay.connect(this,InternalClay,myPoint,internalPoint);
-            
+            const {ip,connections} = e;
+            if(ip)
+            {
+                let pair = this.links.find(c=>this.isSameConnectionPoint(ip,c.cp))
+                if(pair)
+                    pair.conduit.link(connections);
+                else
+                {
+                    pair = {cp:ip,link:Conduit.fromArray(connections)}
+                    this.links.push(pair);
+                }
+            }
+            else
+                Conduit.fromArray(connections)
         })
-
+       
     }
 
-    onCommunication(fromClay,atConnectionPoint,signal){
-
-        const map = this.__.map;
-        const {contacts} = this;
-        //Check to see if he is from map
-        const r =  map.find(m=>m[1] === fromClay)
-        if(r){            
-            
-            const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, r[0]))
-            const {clays} = pair
-            clays.forEach(c=>{                
-                c!==fromClay && Clay.vibrate(c,r[0],signal,this);                
-            })
-        }
-        else{
-            //Not from map
-            const pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectionPoint))
-            
-            pair && map.forEach(([mp,clay,hp])=>{                
-                if(this.isSameConnectionPoint(mp,atConnectionPoint))
-                {                                  
-                    Clay.vibrate(clay,hp,signal,this);
-                }
-            })
-        }
-
+    onCommunication(fromClay,atConnectPoint,signal){
     }
 
     //<-- Someone wants to connect to me through my point"
-    onConnection(withClay,atConnectionPoint){         
-        const {contacts} = this;
-        let pair = contacts.find(p=>this.isSameConnectionPoint(p.cp, atConnectionPoint))
-        pair || (pair = {clays:[],cp:atConnectionPoint},contacts.push(pair) )
-        const {clays,cp} = pair;
-        clays.find(c=>c===withClay) || clays.push(withClay)
+    onConnection(withClay,atConnectPoint){      
+        let pair = this.links.find(c=>this.isSameConnectionPoint(atConnectPoint,c.cp))
+        if(pair){
+            pair.link.link([withClay,atConnectPoint])                
+        }
     }
 
     onBuild(){
@@ -66,9 +49,11 @@ class SClay extends AttribClay{
 
 // Enginering building things
 
-/* 
-    [Me,S1 ------- Clay,Port]
-    [Me,S2 --------Clay,Port]
+/*
+    [
+        {ip:abc, connections:[clay,point,....]},
+        {ip:abc, connections:[clay,point,....]}
+    ]
 */
 
 module.exports = SClay;
